@@ -6,21 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hexo在博客中上传本地图片 | 陈鱼头的博客</title>
+  <title>Python爬虫获取豆瓣top250优秀电影 | 陈鱼头的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="正确使用相对路径引用的标签插件">
+  <meta name="description" content="具体源码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo在博客中上传本地图片">
-<meta property="og:url" content="http://yoursite.com/2020/05/26/hexo%E4%B8%8A%E4%BC%A0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/index.html">
+<meta property="og:title" content="Python爬虫获取豆瓣top250优秀电影">
+<meta property="og:url" content="http://yoursite.com/2020/06/18/Python%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E8%B1%86%E7%93%A3top250%E4%BC%98%E7%A7%80%E7%94%B5%E5%BD%B1/index.html">
 <meta property="og:site_name" content="陈鱼头的博客">
-<meta property="og:description" content="正确使用相对路径引用的标签插件">
+<meta property="og:description" content="具体源码">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/images/test.jpg">
-<meta property="article:published_time" content="2020-05-26T00:30:24.000Z">
-<meta property="article:modified_time" content="2020-05-26T05:51:36.820Z">
+<meta property="article:published_time" content="2020-06-18T03:54:39.000Z">
+<meta property="article:modified_time" content="2020-06-18T04:06:25.837Z">
 <meta property="article:author" content="运维笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/test.jpg">
   
     <link rel="alternative" href="/atom.xml" title="陈鱼头的博客" type="application/atom+xml">
   
@@ -150,14 +148,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-hexo上传本地图片" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Python爬虫获取豆瓣top250优秀电影" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Hexo在博客中上传本地图片
+      Python爬虫获取豆瓣top250优秀电影
     </h1>
   
 
@@ -169,8 +167,8 @@
         </span>
 
 
-<a href="/2020/05/26/hexo%E4%B8%8A%E4%BC%A0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/" class="archive-article-date">
-  	<time datetime="2020-05-26T00:30:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-26</time>
+<a href="/2020/06/18/Python%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E8%B1%86%E7%93%A3top250%E4%BC%98%E7%A7%80%E7%94%B5%E5%BD%B1/" class="archive-article-date">
+  	<time datetime="2020-06-18T03:54:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-18</time>
 </a>
 
         
@@ -178,32 +176,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="正确使用相对路径引用的标签插件"><a href="#正确使用相对路径引用的标签插件" class="headerlink" title="正确使用相对路径引用的标签插件"></a>正确使用相对路径引用的标签插件</h2><a id="more"></a>
+        <h2 id="具体源码"><a href="#具体源码" class="headerlink" title="具体源码"></a>具体源码</h2><a id="more"></a>
 
-<h2 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h2><hr>
-<h3 id="资源文件夹"><a href="#资源文件夹" class="headerlink" title="资源文件夹"></a>资源文件夹</h3><p>资源（Asset）代表 source 文件夹中除了文章以外的所有文件，例如图片、CSS、JS 文件等。<br>比方说，如果你的Hexo项目中只有少量图片，那最简单的方法就是将它们放在 source/images 文件夹中。然后通过类似于 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ![](/images/image.jpg)</span><br></pre></td></tr></table></figure>
-<p>的方法访问它们。</p>
-<h3 id="文章资源文件夹"><a href="#文章资源文件夹" class="headerlink" title="文章资源文件夹"></a>文章资源文件夹</h3><p>1.对于那些想要更有规律地提供图片和其他资源以及想要将他们的资源分布在各个文章上的人来说，Hexo也提供了更组织化的方式来管理资源。<br>这个稍微有些复杂但是管理资源非常方便的功能可以通过将 config.yml 文件中的 post_asset_folder 选项设为 true 来打开。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ vi _config.yml</span><br><span class="line">$ post_asset_folder: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<p>2.当资源文件管理功能打开后，Hexo将会在你每一次通过 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
-<p>命令创建新文章时自动创建一个文件夹。<br>这个资源文件夹将会有与这个文章文件一样的名字。将所有与你的文章有关的资源放在这个关联文件夹中之后，你可以通过相对路径来引用它们，<br>这样你就得到了一个更简单而且方便得多的工作流。</p>
-<h3 id="相对路径引用的标签插件"><a href="#相对路径引用的标签插件" class="headerlink" title="相对路径引用的标签插件"></a>相对路径引用的标签插件</h3><p>3.通过常规的 markdown 语法和相对路径来引用图片和其它资源可能会导致它们在存档页或者主页上显示不正确。<br>在Hexo 2时代，社区创建了很多插件来解决这个问题。但是，随着Hexo 3 的发布，许多新的标签插件被加入到了核心代码中。这使得你可以更简单地在文章中引用你的资源。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ &#123;% asset_path slug %&#125;</span><br><span class="line">$ &#123;% asset_img slug [title] %&#125;</span><br><span class="line">$ &#123;% asset_link slug [title] %&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="错误的引用图片方式"><a href="#错误的引用图片方式" class="headerlink" title="错误的引用图片方式"></a>错误的引用图片方式</h3><p>比如说：当你打开文章资源文件夹功能后，你把一个 example.jpg 图片放在了你的资源文件夹中，如果通过使用相对路径的常规 markdown 语法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ![](/example.jpg)</span><br></pre></td></tr></table></figure>
-<p>它将 不会 出现在首页上。（但是它会在文章中按你期待的方式工作）</p>
-<h3 id="正确的引用图片方式"><a href="#正确的引用图片方式" class="headerlink" title="正确的引用图片方式"></a>正确的引用图片方式</h3><p>是使用下列的标签插件而不是 markdown ：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ &#123;% asset_img example.jpg This is an example image %&#125;</span><br></pre></td></tr></table></figure>
 <hr>
-<p>通过这种方式，图片将会同时出现在文章和主页以及归档页中。</p>
-<h2 id="第二种方法"><a href="#第二种方法" class="headerlink" title="第二种方法"></a>第二种方法</h2><hr>
-<p>1.配置主页配置文件_config.yml里的post_asset_folder:这个选项设置为ture</p>
-<p>2.在source下创建/images文件夹，把你需要上传的图片xxxx.jpg/png复制到这个文件夹</p>
-<p>3.然后只需要在xxxx.md中按照markdown的格式引入图片：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ![你想输入的替代文字](/images(调用这个路径)/图片名.jpg)</span><br></pre></td></tr></table></figure>
-<h2 id="下面是test"><a href="#下面是test" class="headerlink" title="下面是test"></a>下面是test</h2><p><img src="/images/test.jpg" alt="测试图片"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- codeing = utf-8 -*-</span></span><br><span class="line"><span class="comment">#@Time : 2020/6/7 9:53</span></span><br><span class="line"><span class="comment">#@Author : 鱼头</span></span><br><span class="line"><span class="comment">#@File : test.py</span></span><br><span class="line"><span class="comment">#@Software : PyCharm</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import bs4      <span class="comment">#网页解析，获取数据</span></span><br><span class="line">import re       <span class="comment">#正则表达式，进行文字匹配</span></span><br><span class="line">import urllib.request,urllib.error      <span class="comment">#制定URL，获取网页数据</span></span><br><span class="line">import xlwt     <span class="comment">#进行excel操作</span></span><br><span class="line">import sqlite3  <span class="comment">#进行SQLite数据库操作</span></span><br><span class="line">from bs4 import BeautifulSoup</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        baseurl = <span class="string">"https://movie.douban.com/top250?start="</span></span><br><span class="line">        datalist = getData(baseurl)</span><br><span class="line">        savepath = <span class="string">"豆瓣电影Top250.xls"</span></span><br><span class="line">        data = saveDate(datalist,savepath)</span><br><span class="line"></span><br><span class="line"><span class="comment">#抓取网页</span></span><br><span class="line">def getData(baseurl):</span><br><span class="line">        datalist = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(0,10):   <span class="comment">#调用获取页面信息的函数10次</span></span><br><span class="line">                url = baseurl + str(i*25)</span><br><span class="line">                html = askURL(url)      <span class="comment">#保存获取到的网页源码</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">#逐一解析数据</span></span><br><span class="line">                soup = BeautifulSoup(html,<span class="string">"html.parser"</span>)</span><br><span class="line">                <span class="keyword">for</span> item <span class="keyword">in</span> soup.find_all(<span class="string">'div'</span>,class_=<span class="string">"item"</span>):         <span class="comment">#查找符合要求的字符串，形成列表</span></span><br><span class="line">                        <span class="comment">#影片详情链接的规则</span></span><br><span class="line">                        findLink = re.compile(r<span class="string">'&lt;a href="(.*?)"&gt;'</span>)      <span class="comment">#创建正则表达式对象，表示规则（字符串的模式)</span></span><br><span class="line">                        <span class="comment">#影片图片的链接</span></span><br><span class="line">                        findImgSrc = re.compile(r<span class="string">'&lt;img.*src="(.*?)"'</span>,re.S) <span class="comment">#re.S 让换行符包含在字符中</span></span><br><span class="line">                        <span class="comment">#影片的片名</span></span><br><span class="line">                        findTitle = re.compile(r<span class="string">'&lt;span class="title"&gt;(.*)&lt;/span&gt;'</span>)</span><br><span class="line">                        <span class="comment">#评分</span></span><br><span class="line">                        findRating = re.compile(r<span class="string">'&lt;span class="rating_num" property="v:average"&gt;(.*)&lt;/span&gt;'</span>)</span><br><span class="line">                        <span class="comment">#评论人数</span></span><br><span class="line">                        findJudge = re.compile(r<span class="string">'&lt;span&gt;(\d*)人评价&lt;/span&gt;'</span>)</span><br><span class="line">                        <span class="comment">#概况</span></span><br><span class="line">                        findInq = re.compile(r<span class="string">'&lt;span class="inq"&gt;(.*)&lt;/span&gt;'</span>)</span><br><span class="line">                        <span class="comment">#内容</span></span><br><span class="line">                        findBd = re.compile(r<span class="string">'&lt;p class=""&gt;(.*?)&lt;/p&gt;'</span>,re.S)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        <span class="comment">#print(item)</span></span><br><span class="line">                        data = []</span><br><span class="line">                        item = str(item)</span><br><span class="line">                        link = re.findall(findLink,item)[0]     <span class="comment">#re库用来通过正则表达式查找指定的字符串</span></span><br><span class="line">                        data.append(link)</span><br><span class="line">                        imgSrc = re.findall(findImgSrc,item)[0]</span><br><span class="line">                        data.append(imgSrc)</span><br><span class="line">                        titles = re.findall(findTitle,item)</span><br><span class="line">                        <span class="keyword">if</span>(len(titles) == 2):</span><br><span class="line">                                ctitle = titles[0]      <span class="comment">#添加中国名</span></span><br><span class="line">                                data.append(ctitle)</span><br><span class="line">                                otitle = titles[1].replace(<span class="string">"/"</span>,<span class="string">""</span>)      <span class="comment">#替换符号</span></span><br><span class="line">                                data.append(otitle)     <span class="comment">#添加外国名</span></span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                                data.append(titles[0])</span><br><span class="line">                                data.append(<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">                        rating = re.findall(findRating,item)[0]</span><br><span class="line">                        data.append(rating)</span><br><span class="line"></span><br><span class="line">                        judgeNum = re.findall(findJudge,item)[0]</span><br><span class="line">                        data.append(judgeNum)</span><br><span class="line"></span><br><span class="line">                        inq =re.findall(findInq,item)</span><br><span class="line">                        <span class="keyword">if</span> len(inq) !=0:</span><br><span class="line">                                inq =inq[0].replace(<span class="string">"。"</span>,<span class="string">""</span>)</span><br><span class="line">                                data.append(inq)</span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                                data.append(<span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">                        bd = re.findall(findBd,item)[0]</span><br><span class="line">                        bd = re.sub(<span class="string">'&lt;br(\s+)?/&gt;(\s+)?'</span>,<span class="string">" "</span>,bd) <span class="comment">#去掉&lt;br/&gt;</span></span><br><span class="line">                        bd = re.sub(<span class="string">'/'</span>,<span class="string">" "</span>,bd) <span class="comment">#去除/</span></span><br><span class="line">                        data.append(bd.strip()) <span class="comment">#去空格</span></span><br><span class="line"></span><br><span class="line">                        datalist.append(data)</span><br><span class="line">        <span class="comment">#print(datalist)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="built_in">return</span> datalist</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#得到指定一个URL的网页内容</span></span><br><span class="line">def askURL(url):</span><br><span class="line">        head = &#123;              <span class="comment">#模拟浏览器头部信息，向服务器发消息</span></span><br><span class="line">        <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        request = urllib.request.Request(url,headers=head)</span><br><span class="line">        html = <span class="string">""</span></span><br><span class="line">        try:</span><br><span class="line">                response = urllib.request.urlopen(request)</span><br><span class="line">                html = response.read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line">                <span class="comment">#print(html)</span></span><br><span class="line">        except urllib.error.URLError as e:</span><br><span class="line">                <span class="keyword">if</span> hasattr(e,<span class="string">"code"</span>):</span><br><span class="line">                        <span class="built_in">print</span>(e.code)</span><br><span class="line">                <span class="keyword">if</span> hasattr(e,<span class="string">"reason"</span>):</span><br><span class="line">                        <span class="built_in">print</span>(e,<span class="string">"reason"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">return</span> html</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#保存数据</span></span><br><span class="line">def saveDate(datalist,savepath):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"save..."</span>)</span><br><span class="line">        book = xlwt.Workbook(encoding=<span class="string">"utf-8"</span>,style_compression=0)</span><br><span class="line">        sheet = book.add_sheet(<span class="string">'豆瓣电影Top250'</span>,cell_overwrite_ok=True)</span><br><span class="line">        col = (<span class="string">"电影详情链接"</span>,<span class="string">"图片链接"</span>,<span class="string">"影片中文名"</span>,<span class="string">"影片外国名"</span>,<span class="string">"评分"</span>,<span class="string">"评分人数"</span>,<span class="string">"概括"</span>,<span class="string">"相关信息"</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(0,8):</span><br><span class="line">                sheet.write(0,i,col[i])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(0,250):</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">"第%d条"</span> %(i+1))</span><br><span class="line">                data = datalist[i]</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(0,8):</span><br><span class="line">                        sheet.write(i+1,j,data[j])</span><br><span class="line"></span><br><span class="line">        book.save(savepath)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line"></span><br><span class="line">        main()</span><br></pre></td></tr></table></figure>
 
       
 
@@ -283,7 +259,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/26/hexo%E4%B8%8A%E4%BC%A0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/06/18/Python%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E8%B1%86%E7%93%A3top250%E4%BC%98%E7%A7%80%E7%94%B5%E5%BD%B1/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -297,18 +273,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/05/27/%E5%90%84%E5%AE%98%E6%96%B9%E7%B3%BB%E7%BB%9F%E9%95%9C%E5%83%8F%E7%9A%84%E4%B8%8B%E8%BD%BD%E7%BD%91%E5%9D%80/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          常见软件及系统镜像的下载网址
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/05/25/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">我的第一个博客文章</div>
+    <a href="/2020/05/27/%E5%90%84%E5%AE%98%E6%96%B9%E7%B3%BB%E7%BB%9F%E9%95%9C%E5%83%8F%E7%9A%84%E4%B8%8B%E8%BD%BD%E7%BD%91%E5%9D%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">常见软件及系统镜像的下载网址</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -347,7 +314,7 @@
 <script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  id: "http://yoursite.com/2020/05/26/hexo%E4%B8%8A%E4%BC%A0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/",
+  id: "http://yoursite.com/2020/06/18/Python%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E8%B1%86%E7%93%A3top250%E4%BC%98%E7%A7%80%E7%94%B5%E5%BD%B1/",
   owner: 'yaodaobaiguiwan',
   repo: 'get',
   oauth: {
