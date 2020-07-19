@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 陈鱼头的博客</title>
+  <title>centos7重置密码 | 陈鱼头的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="陈鱼头的博客">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="CentOS 7&amp;RHEL 7进入单用户方式和重置密码方式发生了较大变化，GRUB由b引导变成了ctrl+x引导。centos重置密码主要有rd.break和init两种方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos7重置密码">
+<meta property="og:url" content="http://yoursite.com/2020/07/19/centos7%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/index.html">
 <meta property="og:site_name" content="陈鱼头的博客">
+<meta property="og:description" content="CentOS 7&amp;RHEL 7进入单用户方式和重置密码方式发生了较大变化，GRUB由b引导变成了ctrl+x引导。centos重置密码主要有rd.break和init两种方法。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-19T12:35:44.000Z">
+<meta property="article:modified_time" content="2020-07-19T12:46:43.155Z">
 <meta property="article:author" content="运维笔记">
 <meta name="twitter:card" content="summary">
   
@@ -144,202 +148,204 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-centos7重置密码" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      centos7重置密码
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
+
+        
+        
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
 
 <a href="/2020/07/19/centos7%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/" class="archive-article-date">
   	<time datetime="2020-07-19T12:35:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-19</time>
 </a>
 
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/19/centos7%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/">centos7重置密码</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CentOS-7-amp-RHEL-7进入单用户方式和重置密码方式发生了较大变化，GRUB由b引导变成了ctrl-x引导。"><a href="#CentOS-7-amp-RHEL-7进入单用户方式和重置密码方式发生了较大变化，GRUB由b引导变成了ctrl-x引导。" class="headerlink" title="CentOS 7&amp;RHEL 7进入单用户方式和重置密码方式发生了较大变化，GRUB由b引导变成了ctrl+x引导。"></a>CentOS 7&amp;RHEL 7进入单用户方式和重置密码方式发生了较大变化，GRUB由b引导变成了ctrl+x引导。</h2><h2 id="centos重置密码主要有rd-break和init两种方法。"><a href="#centos重置密码主要有rd-break和init两种方法。" class="headerlink" title="centos重置密码主要有rd.break和init两种方法。"></a>centos重置密码主要有rd.break和init两种方法。</h2><a id="more"></a>
+<h2 id="rd-break方法："><a href="#rd-break方法：" class="headerlink" title="rd.break方法："></a>rd.break方法：</h2><p>1、启动的时候，在启动界面，相应启动项，内核名称上按“e”；<br>2、进入后，找到linux16开头的地方，按“end”键到最后，输入rd.break，按ctrl+x进入；<br>3、进去后输入命令mount，发现根为/sysroot/，并且不能写，只有ro=readonly权限；<br>4、mount -o remount,rw /sysroot/，重新挂载，之后mount，发现有了r,w权限；<br>5、chroot /sysroot/ 改变根；<br>（1）echo RedHat|passwd –stdin root 修改root密码为redhat，或者输入passwd，交互修改；<br>（2）还有就是先cp一份，然后修改/etc/shadow文件<br>6、touch /.autorelabel 这句是为了selinux生效<br>7、ctrl+d 退出<br>8、然后reboot<br>至此，密码修改完成</p>
+<h2 id="init方法："><a href="#init方法：" class="headerlink" title="init方法："></a>init方法：</h2><ol>
+<li>启动系统，并在GRUB2启动屏显时，按下e键进入编辑模式。</li>
+<li>在linux16/linux/linuxefi所在参数行尾添加以下内容：init=/bin/sh</li>
+<li>按Ctrl+x启动到shell。</li>
+<li>挂载文件系统为可写模式：mount –o remount,rw /</li>
+<li>运行passwd,并按提示修改root密码。</li>
+<li>如何之前系统启用了selinux，必须运行以下命令，否则将无法正常启动系统：touch /.autorelabel</li>
+<li>运行命令exec /sbin/init来正常启动，或者用命令exec /sbin/reboot重启</li>
+</ol>
+<p>passwd报错为Linux passwd: 拒绝权限（Permission denied）</p>
+<h2 id="原因1：-usr-bin-passwd-权限异常"><a href="#原因1：-usr-bin-passwd-权限异常" class="headerlink" title="原因1：/usr/bin/passwd 权限异常"></a>原因1：/usr/bin/passwd 权限异常</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">正常情况下的权限：</span><br><span class="line">ls -l /usr/bin/passwd</span><br><span class="line">-rwsr-xr-x 1 root root 34392 2009-05-22 16:03 /usr/bin/passwd</span><br><span class="line">修复命令：</span><br><span class="line">chown root:root /usr/bin/passwd</span><br><span class="line">chmod u=rwx,go=rx,u+s /usr/bin/passwd</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+<h2 id="原因2：SELinux-未关闭"><a href="#原因2：SELinux-未关闭" class="headerlink" title="原因2：SELinux 未关闭"></a>原因2：SELinux 未关闭</h2><p>2.1.查看SELinux状态<br>方法1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># /usr/sbin/sestatus -v</span></span><br><span class="line">SELinux status:                 enabled</span><br><span class="line">SELinuxfs mount:                /selinux</span><br><span class="line">Current mode:                   enforcing</span><br></pre></td></tr></table></figure>
+<p>方法2：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># getenforce</span></span><br><span class="line">Enforcing</span><br></pre></td></tr></table></figure>
+<p>2.2.关闭SELinux<br>1、临时关闭（不用重启机器）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0    <span class="comment">#设置SELinux 成为permissive模式</span></span><br><span class="line"><span class="comment">#setenforce 1    #设置SELinux 成为enforcing模式</span></span><br></pre></td></tr></table></figure>
+<p>2、修改配置文件需要重启机器： vi /etc/selinux/config 将SELINUX=enforcing改为SELINUX=disabled 重启</p>
+<p>排查</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsattr /etc/passwd /etc/shadow，检查是否有i属性，如果有i属性，则文件无法修改删除。</span><br><span class="line">删除+i权限，chattr -i /etc/passwd /etc/shadow</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Lsattr /usr/bin/</span><br><span class="line">lsattr /usr/bin/passwd</span><br><span class="line">chattr -i lsattr /usr/bin/ lsattr /usr/bin/passwd</span><br></pre></td></tr></table></figure>
+<p>一般权限问题基本解决，如果还是不行建议检查是否有安装加密软件。</p>
 
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/19/centos7%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
+<nav id="article-nav">
+  
+  
+    <a href="/2020/07/14/Liunx%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Liunx磁盘挂载</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-<a href="/2020/07/14/Liunx%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/" class="archive-article-date">
-  	<time datetime="2020-07-14T05:29:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-14</time>
-</a>
 
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/14/Liunx%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/">Liunx磁盘挂载</a>
-    </h1>
-  
+        
+        
+    </div>
+</aside>
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
 
-<a href="/2020/06/18/Python%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E8%B1%86%E7%93%A3top250%E4%BC%98%E7%A7%80%E7%94%B5%E5%BD%B1/" class="archive-article-date">
-  	<time datetime="2020-06-18T03:54:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-18</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/18/Python%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E8%B1%86%E7%93%A3top250%E4%BC%98%E7%A7%80%E7%94%B5%E5%BD%B1/">Python爬虫获取豆瓣top250优秀电影</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2020/05/27/%E5%90%84%E5%AE%98%E6%96%B9%E7%B3%BB%E7%BB%9F%E9%95%9C%E5%83%8F%E7%9A%84%E4%B8%8B%E8%BD%BD%E7%BD%91%E5%9D%80/" class="archive-article-date">
-  	<time datetime="2020-05-27T00:49:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-27</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/27/%E5%90%84%E5%AE%98%E6%96%B9%E7%B3%BB%E7%BB%9F%E9%95%9C%E5%83%8F%E7%9A%84%E4%B8%8B%E8%BD%BD%E7%BD%91%E5%9D%80/">常见软件及系统镜像的下载网址</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2020/05/26/hexo%E4%B8%8A%E4%BC%A0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/" class="archive-article-date">
-  	<time datetime="2020-05-26T00:30:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-26</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/26/hexo%E4%B8%8A%E4%BC%A0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/">Hexo在博客中上传本地图片</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-
-<a href="/2020/05/25/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" class="archive-article-date">
-  	<time datetime="2020-05-25T02:36:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-25</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">我的第一个博客文章</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "http://yoursite.com/2020/07/19/centos7%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81/",
+  owner: 'yaodaobaiguiwan',
+  repo: 'get',
+  oauth: {
+    client_id: 'b83d33411633a1e7483b',
+    client_secret: '810b0e70becabfba3a8af2c9f4bdfbc2081c6bba',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
@@ -375,8 +381,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
