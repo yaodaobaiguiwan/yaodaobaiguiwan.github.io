@@ -16,7 +16,7 @@
 <meta property="og:description" content="Liunx挂载">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-14T05:29:10.000Z">
-<meta property="article:modified_time" content="2020-07-14T05:48:13.403Z">
+<meta property="article:modified_time" content="2020-08-11T02:21:25.472Z">
 <meta property="article:author" content="运维笔记">
 <meta name="twitter:card" content="summary">
   
@@ -193,7 +193,7 @@
 <p>2.将初始化的分区加入到虚拟卷组中去 vgextend centos(卷组名) /dev/xvdb1</p>
 <p>把需要扩展的资源赋予/dev/mapper/centos-root下</p>
 <p>3.调整磁盘</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lvextend -L +10G /dev/mapper/centos-root <span class="comment">#添加部分磁盘资源</span></span><br><span class="line">lvextend -L +100%FREE /dev/mapper/centos-root <span class="comment">#添加全部新的磁盘资源</span></span><br><span class="line"></span><br><span class="line">xfs_growfs /dev/mapper/centos-root　<span class="comment">#扩展root分区,使上述的设置生效。xfs文件系统的调整命令是xfs_growfs（只支持增大若必须缩小需要格式化数据）</span></span><br><span class="line">resize2fs /dev/mapper/vg_root-lv_root <span class="comment"># ext2/ext3/ext4文件系统的调整命令是resize2fs（增大和减小都支持）</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lvextend -L +10G /dev/mapper/centos-root <span class="comment">#添加部分磁盘资源</span></span><br><span class="line">lvextend -l +100%FREE /dev/mapper/centos-root <span class="comment">#添加全部新的磁盘资源</span></span><br><span class="line"></span><br><span class="line">xfs_growfs /dev/mapper/centos-root　<span class="comment">#扩展root分区,使上述的设置生效。xfs文件系统的调整命令是xfs_growfs（只支持增大若必须缩小需要格式化数据）</span></span><br><span class="line">resize2fs /dev/mapper/vg_root-lv_root <span class="comment"># ext2/ext3/ext4文件系统的调整命令是resize2fs（增大和减小都支持）</span></span><br></pre></td></tr></table></figure>
 
 
 
