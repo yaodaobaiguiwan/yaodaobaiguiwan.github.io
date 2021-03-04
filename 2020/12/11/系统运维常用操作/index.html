@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换http:&#x2F;&#x2F;103.224.249.63&#x2F;CentOS6-Base.repo 系统运维常用操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统运维常用操作">
+<meta property="og:url" content="http://yoursite.com/2020/12/11/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="陈鱼头的博客">
+<meta property="og:description" content="CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换http:&#x2F;&#x2F;103.224.249.63&#x2F;CentOS6-Base.repo 系统运维常用操作">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-11T03:38:31.000Z">
+<meta property="article:modified_time" content="2021-01-23T12:06:28.111Z">
+<meta property="article:author" content="运维笔记">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/11/系统运维常用操作/"/>
+
+
+
+
+
+  <title>系统运维常用操作 | 陈鱼头的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈鱼头的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/11/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="运维笔记">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/themes/next/:20200620170422_4sWAv.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈鱼头的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">系统运维常用操作</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-11T11:38:31+08:00">
+                2020-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换"><a href="#CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换" class="headerlink" title="CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换"></a>CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换</h3><p><a href="http://103.224.249.63/CentOS6-Base.repo" target="_blank" rel="noopener">http://103.224.249.63/CentOS6-Base.repo</a></p>
+<h2 id="系统运维常用操作"><a href="#系统运维常用操作" class="headerlink" title="系统运维常用操作"></a>系统运维常用操作</h2><a id="more"></a>
+
+<hr>
+<h3 id="宝塔的管理"><a href="#宝塔的管理" class="headerlink" title="宝塔的管理"></a>宝塔的管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/xvdb &lt;&lt; EOF</span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line">1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">wq</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">mkfs.ext4 /dev/xvdb1</span><br><span class="line">mkdir /www</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'/dev/xvdb1 /www ext4    defaults    0  0'</span> &gt;&gt; /etc/fstab</span><br><span class="line">mount -a</span><br><span class="line">df -h</span><br></pre></td></tr></table></figure>
+
+<p>一键脚本分盘安装宝塔 wget -O install.sh <a href="http://103.224.249.63/mountbt.sh" target="_blank" rel="noopener">http://103.224.249.63/mountbt.sh</a> &amp;&amp; sh install.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">centos6 yum install -y wget &amp;&amp; wget -O install.sh http://download.bt.cn/install/install.sh &amp;&amp; sh install.sh 宝塔5.9</span><br><span class="line">yum install -y wget &amp;&amp; wget -O install.sh http://125.88.182.172:5880/install/install.sh &amp;&amp; sh install.sh</span><br><span class="line"></span><br><span class="line">centos7 yum install -y wget &amp;&amp; wget -O install.sh http://download.bt.cn/install/install_6.0.sh &amp;&amp; sh install.sh</span><br></pre></td></tr></table></figure>
+<p>香港备用节点：yum install -y wget &amp;&amp; wget -O install.sh <a href="http://103.224.251.67:5880/install/install_6.0.sh" target="_blank" rel="noopener">http://103.224.251.67:5880/install/install_6.0.sh</a> &amp;&amp; sh install.sh<br>yum install -y wget &amp;&amp; wget -O install.sh <a href="http://123.129.198.197/install/install_6.0.sh" target="_blank" rel="noopener">http://123.129.198.197/install/install_6.0.sh</a> &amp;&amp; sh install.sh</p>
+<p>宝塔卸载liunx <a href="https://www.22vd.com/45898.html" target="_blank" rel="noopener">https://www.22vd.com/45898.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.bt.cn/install/bt-uninstall.sh</span><br><span class="line">sh bt-uninstall.sh</span><br></pre></td></tr></table></figure>
+<p>转移系统盘的宝塔到指定磁盘<br>先挂载指定磁盘到/data，再转移</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'/dev/xvdb1  /data ext4   defaults    0  0'</span> &gt;&gt; /etc/fstab</span><br><span class="line">mount -a</span><br><span class="line">df -h</span><br><span class="line">service bt stop</span><br><span class="line">mv /www/* /data</span><br><span class="line">umount /data</span><br><span class="line">sed -i <span class="string">'$s/data/www/g'</span> /etc/fstab</span><br><span class="line">mount -a</span><br><span class="line">service bt start</span><br></pre></td></tr></table></figure>
+<p>如果宝塔的PHP无法安装，可以尝试使用以下方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">把public.sh和php.sh删除，在执行这个下面命令后，重新安装一下PHP看看</span><br><span class="line">wget http://download.bt.cn/install/public.sh</span><br><span class="line">路径/www/server/panel/install</span><br></pre></td></tr></table></figure>
+<h2 id="centos系统防火墙配置"><a href="#centos系统防火墙配置" class="headerlink" title="centos系统防火墙配置"></a>centos系统防火墙配置</h2><p>centos8 目前只支持ext2格式化    网易源 <a href="http://mirrors.163.com/centos/8/BaseOS/x86_64/os/" target="_blank" rel="noopener">http://mirrors.163.com/centos/8/BaseOS/x86_64/os/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">centos7.x防火墙：查看所有打开的端口： firewall-cmd --zone=public --list-ports   </span><br><span class="line">yum -y install firewall</span><br><span class="line">sudo systemctl start firewalld</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> firewalld</span><br><span class="line"> firewall-cmd --state（状态）  </span><br><span class="line"> firewall-cmd --reload （重启）  </span><br><span class="line">systemctl restart firewalld.service</span><br><span class="line"></span><br><span class="line">查看开放的端口和服务以及屏蔽的IP</span><br><span class="line">firewall-cmd --zone=public --list-all</span><br><span class="line"></span><br><span class="line">查看系统中查看系统中可用的服务</span><br><span class="line">firewall-cmd --get-services</span><br><span class="line">添加端口</span><br><span class="line">firewall-cmd --zone=public --add-port=8080/tcp --permanent</span><br><span class="line">添加端口段</span><br><span class="line">firewall-cmd --zone=public --add-port=5060-5061/udp --permanent</span><br><span class="line"></span><br><span class="line">删除端口</span><br><span class="line">firewall-cmd --permanent --zone=public --remove-port=8080/tcp</span><br><span class="line">热加载才能生效</span><br><span class="line">firewall-cmd --reload</span><br><span class="line"></span><br><span class="line">屏蔽IP</span><br><span class="line">firewall-cmd --permanent --add-rich-rule=<span class="string">"rule family=ipv4 source address=43.229.53.61 reject"</span></span><br><span class="line">查看屏蔽结果</span><br><span class="line">firewall-cmd --list-rich-rules</span><br><span class="line">firewall-cmd --reload</span><br><span class="line"></span><br><span class="line">centos6.x: </span><br><span class="line">/sbin/iptables -I INPUT -p tcp --dport 22 -j ACCEPT(执行命令放行指定端口)</span><br><span class="line">/etc/rc.d/init.d/iptables save(保存端口配置)</span><br><span class="line">/etc/rc.d/init.d/iptables restart(重启防火墙)</span><br><span class="line">/etc/init.d/iptables status(查看端口是否开放)</span><br><span class="line"></span><br><span class="line">开机自启</span><br><span class="line">开启： chkconfig iptables on</span><br><span class="line">关闭： chkconfig iptables off</span><br><span class="line"></span><br><span class="line">vi /etc/sysconfig/iptables</span><br><span class="line">-A INPUT -m state –state NEW -m tcp -p tcp –dport 端口 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h3 id="win系统配置多人远程"><a href="#win系统配置多人远程" class="headerlink" title="win系统配置多人远程"></a>win系统配置多人远程</h3><p>默认远程数为2个，如需添加需要配置</p>
+<h3 id="注意：需要先安装远程管理服务-选择远程桌面会话主机"><a href="#注意：需要先安装远程管理服务-选择远程桌面会话主机" class="headerlink" title="注意：需要先安装远程管理服务  选择远程桌面会话主机"></a>注意：需要先安装远程管理服务  选择远程桌面会话主机</h3><p>打开cmd，输入gpedit.msc 组策略，找到【计算机设置】–【管理模板】–【windows组件】–【远程桌面服务】–【远程桌面会话主机】–【连接】<br>1、拒绝将已经登录到控制台会话的管理员注销—选择启用 ? ? —— 防止恶搞T管理员<br>2、限制连接的数量—选择启用，配置‘允许的RD最大连接数’为10个<br>3、将远程桌面服务用户限制到单独的远程桌面服务会话—选择禁用<br>最后复制 gpupdate/force 命令到管理员命令提示符窗口中, 回车,显示: 正在更新策略… 计算机策略更新成功完成。</p>
+<h3 id="liunx服务器异常重启日志查看"><a href="#liunx服务器异常重启日志查看" class="headerlink" title="liunx服务器异常重启日志查看"></a>liunx服务器异常重启日志查看</h3><p>执行命令”cd /var/log“进入系统所在日志目录<br>执行命令”last | grep reboot“ 查看过去重启的日志；<br>执行命令”last reboot | head -1“ 查看最近的一条重启记录；<br>为了排查问题，也可以执行命令”last -x|grep shutdown | head -1“查看上次关机的日期和时间：<br>执行命令”history“ 查看最近系统执行了哪些操作<br>执行命令”cat /var/log/messages|grep WARNING 查看整个系统日志的报错信息；</p>
+<h3 id="系统激活软件"><a href="#系统激活软件" class="headerlink" title="系统激活软件"></a>系统激活软件</h3><p>优先使用手动进行激活 <a href="http://0x3ev0.coding-pages.com/2020/09/24/手动KVM微软系统激活/" target="_blank" rel="noopener">http://0x3ev0.coding-pages.com/2020/09/24/手动KVM微软系统激活/</a><br>激活工具   <a href="https://www.lanzoux.com/imsIDgjjvvg" target="_blank" rel="noopener">https://www.lanzoux.com/imsIDgjjvvg</a><br><a href="https://cangshui.net/-down/-mysh/kms/KMS-Cangshui.net.bat" target="_blank" rel="noopener">https://cangshui.net/-down/-mysh/kms/KMS-Cangshui.net.bat</a></p>
+<h3 id="同步时间命令"><a href="#同步时间命令" class="headerlink" title="同步时间命令"></a>同步时间命令</h3><p>yum -y install ntp<br>hwclock - -show  查看硬件时间<br>ntpdate  ntp.api.bz  同步系统时间<br>hwclock - -hctosys  设置系统时间和硬件时间同步<br>hwclock  -w  保存时钟</p>
+<p>或者<br>ntpdate  ntp.api.bz  同步系统时间<br>直接执行 hwclock - -systohc  写入硬件时间</p>
+<h3 id="xen转移机器"><a href="#xen转移机器" class="headerlink" title="xen转移机器"></a>xen转移机器</h3><p>模板导出; xe vm-export uuid=3fb1a8cc-2eac-24c4-f556-bc33320a98c6 filename=xvm编号<br>模板导入: xe vm-import -h 节点内网ip -u root -pw 节点密码 filename=./xvm编号<br>service iptables start<br>service iptables stop</p>
+<p>iptables -I INPUT -s 需要放行的ip -p tcp –dport 443 -j ACCEPT<br>iptables -D INPUT -s 需要屏蔽的ip -p tcp –dport 443 -j ACCEPT<br>iptables -I INPUT -s 全部放行的ip -j ACCEPT</p>
+<h3 id="mysql日志分析"><a href="#mysql日志分析" class="headerlink" title="mysql日志分析"></a>mysql日志分析</h3><p>mysql日志分析：<a href="https://www.cnblogs.com/f-ck-need-u/p/9001061.html" target="_blank" rel="noopener">https://www.cnblogs.com/f-ck-need-u/p/9001061.html</a></p>
+<p>查看数据库的最大连接数<br>mysql&gt;  show variables like ‘%max_connections%’;</p>
+<p>查看数据库当前连接数，并发数。<br>mysql&gt; show status like ‘Threads%’;</p>
+<p>Threads_cached : 代表当前此时此刻线程缓存中有多少空闲线程。<br>Threads_connected :代表当前已建立连接的数量，因为一个连接就需要一个线程，所以也可以看成当前被使用的线程数。<br>Threads_created :代表从最近一次服务启动，已创建线程的数量。<br>Threads_running :代表当前激活的（非睡眠状态）线程数。并不是代表正在使用的线程数，有时候连接已建立，但是连接处于sleep状态，这里相对应的线程也是sleep状态。</p>
+<p>查看数据库编码<br>mysql&gt; show variables like ‘character%’;</p>
+<p>character_set_client      为客户端编码方式；<br>character_set_connection  为建立连接使用的编码；<br>character_set_database    为数据库的编码；<br>character_set_results     为结果集的编码；<br>character_set_server      为数据库服务器的编码；<br>只要保证以上采用的编码方式一样，就不会出现乱码问题。</p>
+<p>查看日志分析<br>mysql&gt; show global variables like ‘%log%’;</p>
+<p>查看慢日志超时时间<br>mysql&gt; show global variables like ‘long%’;</p>
+<p>其中这个慢查询时间并不是只表示语句自身执行超过的时间(秒)还包含由于其他资源被征用造成阻塞的查询执行时间或其他原因等都被记录到慢查询中。<br>所以这个慢查的时长表示从查询开始到查询结束中间包含可能的任何原因所经历的所有时间。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>查看当前目录文件大小前十的文件du -a -h | sort -n -r | head -n 10<br>修复数据表check table 表名     repair table 表名</p>
+<p>[root@jyrac2 /]# mkfs.ext3 /dev/sda3<br>mke2fs 1.39 (29-May-2006)<br>Could not stat /dev/sda3 — No such file or directory</p>
+<p>The device apparently does not exist; did you specify it correctly?</p>
+<p>解决这个问题可以使用partprobe 命令,partprobe包含在parted的rpm软件包中。partprobe可以修改kernel中分区表，使kernel重新读取分区表。 因此，使用该命令就可以创建分区并且在不重新启动机器的情况下系统能够识别这些分区。<br>检查是否安装了partprobe软件包<br>[root@jyrac2 /]# rpm -q parted<br>parted-1.8.1-23.el5</p>
+<p>[root@jyrac2 /]# partprobe<br>[root@jyrac2 /]# mkfs -t ext4 /dev/sda3</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/09/24/%E6%89%8B%E5%8A%A8KVM%E5%BE%AE%E8%BD%AF%E7%B3%BB%E7%BB%9F%E6%BF%80%E6%B4%BB/" rel="next" title="手动KVM微软系统激活">
+                <i class="fa fa-chevron-left"></i> 手动KVM微软系统激活
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/21/Shell%E8%84%9A%E6%9C%AC%E5%AE%9E%E7%8E%B0Centos%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85%E5%AE%9D%E5%A1%94/" rel="prev" title="Shell脚本实现Centos系统自动安装宝塔">
+                Shell脚本实现Centos系统自动安装宝塔 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/themes/next/:20200620170422_4sWAv.jpeg"
+                alt="运维笔记" />
+            
+              <p class="site-author-name" itemprop="name">运维笔记</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换"><span class="nav-number">1.</span> <span class="nav-text">CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统运维常用操作"><span class="nav-number"></span> <span class="nav-text">系统运维常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#宝塔的管理"><span class="nav-number">1.</span> <span class="nav-text">宝塔的管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#centos系统防火墙配置"><span class="nav-number"></span> <span class="nav-text">centos系统防火墙配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#win系统配置多人远程"><span class="nav-number">1.</span> <span class="nav-text">win系统配置多人远程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意：需要先安装远程管理服务-选择远程桌面会话主机"><span class="nav-number">2.</span> <span class="nav-text">注意：需要先安装远程管理服务  选择远程桌面会话主机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#liunx服务器异常重启日志查看"><span class="nav-number">3.</span> <span class="nav-text">liunx服务器异常重启日志查看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统激活软件"><span class="nav-number">4.</span> <span class="nav-text">系统激活软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步时间命令"><span class="nav-number">5.</span> <span class="nav-text">同步时间命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xen转移机器"><span class="nav-number">6.</span> <span class="nav-text">xen转移机器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql日志分析"><span class="nav-number">7.</span> <span class="nav-text">mysql日志分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">8.</span> <span class="nav-text">其他</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">运维笔记</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
