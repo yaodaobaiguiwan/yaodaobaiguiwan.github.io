@@ -181,7 +181,7 @@ th {
 }
 ::selection {
   background: #262a30;
-  color: #fff;
+  color: #ddd;
 }
 body {
   position: relative;
@@ -189,7 +189,7 @@ body {
   font-size: 14px;
   line-height: 2;
   color: #555;
-  background: #fff;
+  background: #b0c4de;
 }
 @media (max-width: 767px) {
   body {
@@ -1059,7 +1059,7 @@ pre .javascript .function {
 .back-to-top {
   display: none;
   margin: 200px -100px -200px;
-  background: #fff;
+  background: #b0c4de;
   font-size: 12px;
   opacity: 1;
   cursor: pointer;
@@ -1818,7 +1818,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #abffe8;
+  background: #ff7f57;
 }
 .links-of-blogroll {
   font-size: 13px;
