@@ -499,7 +499,7 @@ code {
   padding: 2px 4px;
   word-wrap: break-word;
   color: #555;
-  background: #eee;
+  background: #fff0ac;
   border-radius: 3px;
   font-size: 13px;
 }
@@ -1818,7 +1818,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff7f57;
+  background: #67ff53;
 }
 .links-of-blogroll {
   font-size: 13px;
