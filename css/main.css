@@ -1818,7 +1818,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #40c858;
+  background: #0ad6f0;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2906,12 +2906,4 @@ hr {
   padding: 25px;
   -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
   -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
-}
-blockquote.red {
-  color: #000;
-  border-left: 4px solid #d9534f;
-  background-color: #fcf1f2;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  margin-bottom: 20px;
 }
