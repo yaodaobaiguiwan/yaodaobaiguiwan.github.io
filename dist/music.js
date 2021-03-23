@@ -3,16 +3,16 @@ const ap = new APlayer({
     fixed: true,
     autoplay: false,
     audio: [
-      {
-        name: "双人舞 第二幕第三场第14首",
-        artist: 'Pyotr Ilyich Tchaikovsky',
-        url: 'http://m10.music.126.net/20210323085746/0ecfc3ec2484b5f929f13ddfec786373/ymusic/ccae/888f/4f48/8c67340af1d69e12e15b0c38f677eeca.mp3',
-      },
+	{
+	name: "双人舞 第二幕第三场第14首",
+	artist: 'Pyotr Ilyich Tchaikovsky',
+	url: 'http://m10.music.126.net/20210323085746/0ecfc3ec2484b5f929f13ddfec786373/ymusic/ccae/888f/4f48/8c67340af1d69e12e15b0c38f677eeca.mp3',
+	},
 
 	{
-        name: "莫扎特 - 小步舞曲",
+	name: "莫扎特 - 小步舞曲",
         artist: 'Wolfgang Amadeus Mozart',
-        url: 'http://m10.music.126.net/20210323091002/cccfca30ab8d2fce3519d9d89b973660/ymusic/380d/2179/e4c8/048ad6b300de17413689d22136b53c9a.mp3',
+        url: 'http://m10.music.126.net/20210323103053/758c467fa5854351746d31b66d80ed91/ymusic/380d/2179/e4c8/048ad6b300de17413689d22136b53c9a.mp3',
       },
 
 	{
@@ -23,8 +23,8 @@ const ap = new APlayer({
 
 	{
         name: "原来",
-        artist: '林俊杰',
-        url: 'http://m10.music.126.net/20210323092130/1c977ea305d0bb662d491e27d0725a6e/ymusic/obj/w5zDlMODwrDDiGjCn8Ky/3094661786/6904/0472/3c23/bbbedff50edf5fcb8b2eb02f731f3e48.mp3',
+        artist: '林俊杰',        
+	url: 'http://m10.music.126.net/20210323102609/313588081a313f4cd43683c0c5bb7463/ymusic/obj/w5zDlMODwrDDiGjCn8Ky/3094661786/6904/0472/3c23/bbbedff50edf5fcb8b2eb02f731f3e48.mp3',
       },
 
 	{
