@@ -33,12 +33,6 @@ const ap = new APlayer({
         url: 'http://m10.music.126.net/20210323092554/f73cc7ec59d5b35ea5516a4d1aa5b2af/ymusic/0c70/b478/049f/e602701f487136ebb36d26581e4e6aad.mp3',
       },
 
-	{
-        name: "莫扎特 - 小步舞曲",
-        artist: 'Wolfgang Amadeus Mozart',
-        url: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=495823193&auto=0&height=66"></iframe>',
-      },
-
 	
     ]
 });
