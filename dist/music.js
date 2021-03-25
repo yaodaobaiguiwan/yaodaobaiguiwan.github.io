@@ -26,7 +26,11 @@ const ap = new APlayer({
         artist: '蔡依林',
         url: 'http://103.224.249.63/倒带.mp3',
       },
-
+	{
+	name: "世界末日",
+        artist: '周杰伦',
+        url: 'http://103.224.249.63/周杰伦 - 世界末日.mp3',
+      }
 	
     ]
 });
