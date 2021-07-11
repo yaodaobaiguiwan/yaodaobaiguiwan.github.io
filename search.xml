@@ -2723,6 +2723,34 @@ KVM虚拟机是一个普通的linux进程，vcpu是一个线程，我们可以�
 <p>源码中对应的参数解释，这边都有： Aplayer 中文文档:<a href="https://aplayer.js.org/#/zh-Hans/" target="_blank" rel="noopener">https://aplayer.js.org/#/zh-Hans/</a><br>audio 对应的便是音频文件，所以音乐播放器需要播放的音乐是需要自己进行相关信息（如歌曲链接、歌词、封面等）的配置。<br>推荐使用音乐外链网站获取：<a href="http://music.xf1433.com/" target="_blank" rel="noopener">http://music.xf1433.com/</a></p>
 <h2 id="3-添加-layout-swig"><a href="#3-添加-layout-swig" class="headerlink" title="3.添加_layout.swig"></a>3.添加_layout.swig</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">打开themes\next\layout\_layout.swig文件，将</span><br><span class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"/dist/APlayer.min.css"</span>&gt;</span><br><span class="line">&lt;div id=<span class="string">"aplayer"</span>&gt;&lt;/div&gt;</span><br><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span> src=<span class="string">"/dist/APlayer.min.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span> src=<span class="string">"/dist/music.js"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 <p>添加到&lt;body itemscope …&gt;后面就行，即在<body><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>里面。<br>重新生成，访问页面，就能看到左下角的音乐播放器了。</p>
+<h2 id="Hexo-next-主题配置右侧栏的分类和标签打开的是空白"><a href="#Hexo-next-主题配置右侧栏的分类和标签打开的是空白" class="headerlink" title="Hexo next 主题配置右侧栏的分类和标签打开的是空白"></a>Hexo next 主题配置右侧栏的分类和标签打开的是空白</h2><ol>
+<li>新建 标签 和分类 页面<br>只要在 source 文件夹下新建.md文件，并且文章前面按如下格式表明所属分类和标签就行：<br>title: 自学编程成功概率有多少可能<br>date: 2017-05-26 19:57:47<br>tags: [编程,感悟]<br>categories: 技术<br>先根目录输入命令 hexo new page categories 会自动新建 categorier 文件夹并生成一个index.md文件，里面的代码为：<br>title: categories<br>date: 2019-01-30 23:10:51<br>同理，「标签」也一样 hexo new page tags 生成 tags 文件夹，其中会自动生成一个index.md文件,代码为：</li>
+</ol>
+<p>title: tags<br>date: 2019-01-30 23:14:51<br>2. 开始配置菜单，如「首页」、「分类」、「标签」等这些菜单<br>主题文件下的_config.yml</p>
+<p>menu:<br>  home: / || home<br>  about: /about/ || user<br>  archives: /archives/ || archive<br>  tags: /tags/ || tags<br>  categories: /categories/ || th<br>  schedule: /schedule/ || calendar<br>  sitemap: /sitemap.xml || sitemap</p>
+<h1 id="commonweal-404-heartbeat"><a href="#commonweal-404-heartbeat" class="headerlink" title="commonweal: /404/ || heartbeat"></a>commonweal: /404/ || heartbeat</h1><h1 id="Enable-Disable-menu-icons-菜单图标"><a href="#Enable-Disable-menu-icons-菜单图标" class="headerlink" title="Enable/Disable menu icons.   #菜单图标"></a>Enable/Disable menu icons.   #菜单图标</h1><p>menu_icons:<br>    enable: true<br>然后跑去 language 文件夹 zh-Hans.yml 修改中文名字，菜单就以中文显示了。</p>
+<p>menu:<br>  home: 首&emsp;&emsp;页<br>  archives: 归&emsp;&emsp;档<br>  categories: 分&emsp;&emsp;类<br>  schedule: 日程表<br>  sitemap: 站点地图<br>  tags: 标&emsp;&emsp;签<br>  about: 关于博主<br>  search: 站内搜索<br>  top: 最受欢迎</p>
+<h1 id="commonweal-公益404"><a href="#commonweal-公益404" class="headerlink" title="commonweal: 公益404"></a>commonweal: 公益404</h1><p>我们发表文章使用「tags」「categories」只需在文章开头添加如下代码：</p>
+<hr>
+<p>title: 利用GitHub和HEXO免费搭建个人博客高级 美化篇<br>date: 2019-01-29 22:58:56<br>tags: [hexo建站,hexo部署,github部署,个人博客]      #添加的标签<br>categories: hexo博客                              #添加的分类</p>
+<hr>
+<p>如此即可在菜单栏里的「tags」「categories」看见相应的效果。但是实际上打开是空白页面 本文的重点来了。<br>小tips：每次的手输入 categories 我们可以在D:\blog\scaffolds\post.md 添加如下代码，这样每次新建文章，就自动有了。</p>
+<hr>
+<p>title: 我的第一个博客文章<br>date: 1590374214000<br>tags:           #新加<br>categories:     #新加</p>
+<hr>
+<ol start="3">
+<li>Hexo next 主题配置右侧栏的分类和标签打开的是空白<br>先前 categorier 文件夹（D:\blog\source\categories），里面的 index.md 文件打开，修改（即添加一行）为：</li>
+</ol>
+<hr>
+<p>title: categories<br>date: 2018-01-23 17:14:51<br>type: “categories”   #新添加的</p>
+<hr>
+<p>同理，「标签」</p>
+<hr>
+<p>title: tags<br>date: 2018-01-23 17:14:51<br>type: “tags”     #新添加的</p>
+<hr>
+<p>保存效果为：</p>
+<p>tags<br>4. 插播友链的设置方法<br>主题文件里，就在设置 menu 菜单的下面：</p>
+<p>social:   #友链地址<br>  GitHub: <a href="https://github.com/condorheroblog" target="_blank" rel="noopener">https://github.com/condorheroblog</a> || github<br>  E-Mail: mailto:<a href="mailto:2846124732@qq.com">2846124732@qq.com</a> || envelope<br>  简书: <a href="https://www.jianshu.com/u/491bd4155f96" target="_blank" rel="noopener">https://www.jianshu.com/u/491bd4155f96</a><br>  QQ: <a href="http://sighttp.qq.com/authd?IDKEY=f67c919702f76aff21f09284308fe39875d3f6b466780165" target="_blank" rel="noopener">http://sighttp.qq.com/authd?IDKEY=f67c919702f76aff21f09284308fe39875d3f6b466780165</a><br>social_icons:  #友链图标<br>  enable: true<br>  icons_only: false<br>  transition: false</p>
 ]]></content>
   </entry>
 </search>
