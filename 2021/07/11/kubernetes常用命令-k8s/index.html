@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="docker+k8s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubernetes常用命令(k8s)">
+<meta property="og:url" content="http://yoursite.com/2021/07/11/kubernetes%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-k8s/index.html">
+<meta property="og:site_name" content="陈鱼头的博客">
+<meta property="og:description" content="docker+k8s">
+<meta property="article:published_time" content="2021-07-11T14:24:33.000Z">
+<meta property="article:modified_time" content="2021-07-11T15:00:56.209Z">
+<meta property="article:author" content="运维笔记 QQ:1714594511 喵星的技术宅">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":60,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/07/11/kubernetes常用命令-k8s/"/>
+
+
+
+
+
+  <title>kubernetes常用命令(k8s) | 陈鱼头的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈鱼头的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+	<link rel="stylesheet" href="/dist/APlayer.min.css">
+	<div id="aplayer"></div>
+	<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+	<script type="text/javascript" src="/dist/music.js"></script>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/11/kubernetes%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-k8s/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="运维笔记 QQ:1714594511 喵星的技术宅">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈鱼头的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">kubernetes常用命令(k8s)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-11T22:24:33+08:00">
+                2021-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/K8s/" itemprop="url" rel="index">
+                    <span itemprop="name">K8s</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="docker-k8s"><a href="#docker-k8s" class="headerlink" title="docker+k8s"></a>docker+k8s</h3><a id="more"></a>
+
+
+<p>基础命令：create，delete，get，run，expose，set，explain，edit。<br>create命令：根据文件或者输入来创建资源</p>
+<h1 id="创建Deployment和Service资源"><a href="#创建Deployment和Service资源" class="headerlink" title="创建Deployment和Service资源"></a>创建Deployment和Service资源</h1><p>kubectl create -f javak8s-deployment.yaml<br>kubectl create -f javak8s-service.yaml<br>delete命令：删除资源</p>
+<h1 id="根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效"><a href="#根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效" class="headerlink" title="根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效"></a>根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效</h1><p>kubectl delete -f javak8s-deployment.yaml<br>kubectl delete -f javak8s-service.yaml</p>
+<h1 id="也可以通过具体的资源名称来进行删除，使用这个删除资源，需要同时删除pod和service资源才行"><a href="#也可以通过具体的资源名称来进行删除，使用这个删除资源，需要同时删除pod和service资源才行" class="headerlink" title="也可以通过具体的资源名称来进行删除，使用这个删除资源，需要同时删除pod和service资源才行"></a>也可以通过具体的资源名称来进行删除，使用这个删除资源，需要同时删除pod和service资源才行</h1><p>kubectl delete 具体的资源名称<br>get命令：获得资源信息</p>
+<h1 id="查看所有的资源信息"><a href="#查看所有的资源信息" class="headerlink" title="查看所有的资源信息"></a>查看所有的资源信息</h1><p>kubectl get all</p>
+<h1 id="查看pod列表"><a href="#查看pod列表" class="headerlink" title="查看pod列表"></a>查看pod列表</h1><p>kubectl get pod</p>
+<h1 id="显示pod节点的标签信息"><a href="#显示pod节点的标签信息" class="headerlink" title="显示pod节点的标签信息"></a>显示pod节点的标签信息</h1><p>kubectl get pod –show-labels</p>
+<h1 id="根据指定标签匹配到具体的pod"><a href="#根据指定标签匹配到具体的pod" class="headerlink" title="根据指定标签匹配到具体的pod"></a>根据指定标签匹配到具体的pod</h1><p>kubectl get pods -l app=example</p>
+<h1 id="查看node节点列表"><a href="#查看node节点列表" class="headerlink" title="查看node节点列表"></a>查看node节点列表</h1><p>kubectl get node </p>
+<h1 id="显示node节点的标签信息"><a href="#显示node节点的标签信息" class="headerlink" title="显示node节点的标签信息"></a>显示node节点的标签信息</h1><p>kubectl get node –show-labels</p>
+<h1 id="查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）"><a href="#查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）" class="headerlink" title="查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）"></a>查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）</h1><p>kubectl get pod -o wide</p>
+<h1 id="查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息"><a href="#查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息" class="headerlink" title="查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息"></a>查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息</h1><p>kubectl get svc<br>[root@master ~]# kubectl get svc<br>NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE<br>go-service      NodePort    10.10.10.247   <none>        8089:33702/TCP   29m<br>java-service    NodePort    10.10.10.248   <none>        8082:32823/TCP   5h17m<br>kubernetes      ClusterIP   10.10.10.1     <none>        443/TCP          5d16h<br>nginx-service   NodePort    10.10.10.146   <none>        88:34823/TCP     2d19h</p>
+<h1 id="查看命名空间"><a href="#查看命名空间" class="headerlink" title="查看命名空间"></a>查看命名空间</h1><p>kubectl get ns</p>
+<h1 id="查看所有pod所属的命名空间"><a href="#查看所有pod所属的命名空间" class="headerlink" title="查看所有pod所属的命名空间"></a>查看所有pod所属的命名空间</h1><p>kubectl get pod –all-namespaces</p>
+<h1 id="查看所有pod所属的命名空间并且查看都在哪些节点上运行"><a href="#查看所有pod所属的命名空间并且查看都在哪些节点上运行" class="headerlink" title="查看所有pod所属的命名空间并且查看都在哪些节点上运行"></a>查看所有pod所属的命名空间并且查看都在哪些节点上运行</h1><p>kubectl get pod –all-namespaces  -o wide</p>
+<h1 id="查看目前所有的replica-set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息"><a href="#查看目前所有的replica-set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息" class="headerlink" title="查看目前所有的replica set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息"></a>查看目前所有的replica set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息</h1><p>kubectl get rs<br>[root@master ~]# kubectl get rs<br>NAME                          DESIRED   CURRENT   READY   AGE<br>go-deployment-58c76f7d5c      1         1         1       32m<br>java-deployment-76889f56c5    1         1         1       5h21m<br>nginx-deployment-58d6d6ccb8   3         3         3       2d19h</p>
+<h1 id="查看目前所有的deployment"><a href="#查看目前所有的deployment" class="headerlink" title="查看目前所有的deployment"></a>查看目前所有的deployment</h1><p>kubectl get deployment<br>[root@master ~]# kubectl get deployment<br>NAME               READY   UP-TO-DATE   AVAILABLE   AGE<br>go-deployment      1/1     1            1           34m<br>java-deployment    1/1     1            1           5h23m<br>nginx-deployment   3/3     3            3           2d19h</p>
+<h1 id="查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息"><a href="#查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息" class="headerlink" title="查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息"></a>查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息</h1><p> kubectl get deploy -o wide<br>[root@master bin]# kubectl get deploy -o wide<br>NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES       SELECTOR<br>nginx   3/3     3            3           16m   nginx        nginx:1.10   app=example<br>run命令：在集群中创建并运行一个或多个容器镜像。</p>
+<h1 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h1><p>run NAME –image=image [–env=”key=value”] [–port=port] [–replicas=replicas] [–dry-run=bool] [–overrides=inline-json] [–command] – [COMMAND] [args…]</p>
+<h1 id="示例，运行一个名称为nginx，副本数为3，标签为app-example，镜像为nginx-1-10，端口为80的容器实例"><a href="#示例，运行一个名称为nginx，副本数为3，标签为app-example，镜像为nginx-1-10，端口为80的容器实例" class="headerlink" title="示例，运行一个名称为nginx，副本数为3，标签为app=example，镜像为nginx:1.10，端口为80的容器实例"></a>示例，运行一个名称为nginx，副本数为3，标签为app=example，镜像为nginx:1.10，端口为80的容器实例</h1><p>kubectl run nginx –replicas=3 –labels=”app=example” –image=nginx:1.10 –port=80<br>其他用法参见：<a href="http://docs.kubernetes.org.cn/468.html" target="_blank" rel="noopener">http://docs.kubernetes.org.cn/468.html</a><br>expose命令：创建一个service服务，并且暴露端口让外部可以访问</p>
+<h1 id="创建一个nginx服务并且暴露端口让外界可以访问"><a href="#创建一个nginx服务并且暴露端口让外界可以访问" class="headerlink" title="创建一个nginx服务并且暴露端口让外界可以访问"></a>创建一个nginx服务并且暴露端口让外界可以访问</h1><p>kubectl expose deployment nginx –port=88 –type=NodePort –target-port=80 –name=nginx-service<br>关于expose的详细用法参见：<a href="http://docs.kubernetes.org.cn/475.html" target="_blank" rel="noopener">http://docs.kubernetes.org.cn/475.html</a><br>set命令： 配置应用的一些特定资源，也可以修改应用已有的资源</p>
+<h1 id="使用kubectl-set-–help查看，它的子命令，env，image，resources，selector，serviceaccount，subject。"><a href="#使用kubectl-set-–help查看，它的子命令，env，image，resources，selector，serviceaccount，subject。" class="headerlink" title="使用kubectl set –help查看，它的子命令，env，image，resources，selector，serviceaccount，subject。"></a>使用kubectl set –help查看，它的子命令，env，image，resources，selector，serviceaccount，subject。</h1><p>set命令详情参见：<a href="http://docs.kubernetes.org.cn/669.html" target="_blank" rel="noopener">http://docs.kubernetes.org.cn/669.html</a><br>语法：<br>resources (-f FILENAME | TYPE NAME) ([–limits=LIMITS &amp; –requests=REQUESTS]<br>kubectl set resources 命令</p>
+<p>这个命令用于设置资源的一些范围限制。</p>
+<p>资源对象中的Pod可以指定计算资源需求（CPU-单位m、内存-单位Mi），即使用的最小资源请求（Requests），限制（Limits）的最大资源需求，Pod将保证使用在设置的资源数量范围。</p>
+<p>对于每个Pod资源，如果指定了Limits（限制）值，并省略了Requests（请求），则Requests默认为Limits的值。</p>
+<p>可用资源对象包括(支持大小写)：replicationcontroller、deployment、daemonset、job、replicaset。</p>
+<p>例如：</p>
+<h1 id="将deployment的nginx容器cpu限制为“200m”，将内存设置为“512Mi”"><a href="#将deployment的nginx容器cpu限制为“200m”，将内存设置为“512Mi”" class="headerlink" title="将deployment的nginx容器cpu限制为“200m”，将内存设置为“512Mi”"></a>将deployment的nginx容器cpu限制为“200m”，将内存设置为“512Mi”</h1><p>kubectl set resources deployment nginx -c=nginx –limits=cpu=200m,memory=512Mi</p>
+<h1 id="为nginx中的所有容器设置-Requests和Limits"><a href="#为nginx中的所有容器设置-Requests和Limits" class="headerlink" title="为nginx中的所有容器设置 Requests和Limits"></a>为nginx中的所有容器设置 Requests和Limits</h1><p>kubectl set resources deployment nginx –limits=cpu=200m,memory=512Mi –requests=cpu=100m,memory=256Mi</p>
+<h1 id="删除nginx中容器的计算资源值"><a href="#删除nginx中容器的计算资源值" class="headerlink" title="删除nginx中容器的计算资源值"></a>删除nginx中容器的计算资源值</h1><p>kubectl set resources deployment nginx –limits=cpu=0,memory=0 –requests=cpu=0,memory=0<br>kubectl set selector命令</p>
+<p>设置资源的selector（选择器）。如果在调用”set selector”命令之前已经存在选择器，则新创建的选择器将覆盖原来的选择器。</p>
+<p>selector必须以字母或数字开头，最多包含63个字符，可使用：字母、数字、连字符” - “ 、点”.”和下划线” _ “。如果指定了–resource-version，则更新将使用此资源版本，否则将使用现有的资源版本。</p>
+<p>注意：目前selector命令只能用于Service对象。</p>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><p>selector (-f FILENAME | TYPE NAME) EXPRESSIONS [–resource-version=version]<br>kubectl set image命令</p>
+<p>​ 用于更新现有资源的容器镜像。</p>
+<p>可用资源对象包括：pod (po)、replicationcontroller (rc)、deployment (deploy)、daemonset (ds)、job、replicaset (rs)。</p>
+<h1 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h1><p>image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 … CONTAINER_NAME_N=CONTAINER_IMAGE_N</p>
+<h1 id="将deployment中的nginx容器镜像设置为“nginx：1-9-1”。"><a href="#将deployment中的nginx容器镜像设置为“nginx：1-9-1”。" class="headerlink" title="将deployment中的nginx容器镜像设置为“nginx：1.9.1”。"></a>将deployment中的nginx容器镜像设置为“nginx：1.9.1”。</h1><p>kubectl set image deployment/nginx busybox=busybox nginx=nginx:1.9.1</p>
+<h1 id="所有deployment和rc的nginx容器镜像更新为“nginx：1-9-1”"><a href="#所有deployment和rc的nginx容器镜像更新为“nginx：1-9-1”" class="headerlink" title="所有deployment和rc的nginx容器镜像更新为“nginx：1.9.1”"></a>所有deployment和rc的nginx容器镜像更新为“nginx：1.9.1”</h1><p>kubectl set image deployments,rc nginx=nginx:1.9.1 –all</p>
+<h1 id="将daemonset-abc的所有容器镜像更新为“nginx：1-9-1”"><a href="#将daemonset-abc的所有容器镜像更新为“nginx：1-9-1”" class="headerlink" title="将daemonset abc的所有容器镜像更新为“nginx：1.9.1”"></a>将daemonset abc的所有容器镜像更新为“nginx：1.9.1”</h1><p>kubectl set image daemonset abc *=nginx:1.9.1</p>
+<h1 id="从本地文件中更新nginx容器镜像"><a href="#从本地文件中更新nginx容器镜像" class="headerlink" title="从本地文件中更新nginx容器镜像"></a>从本地文件中更新nginx容器镜像</h1><p>kubectl set image -f path/to/file.yaml nginx=nginx:1.9.1 –local -o yaml<br>explain命令：用于显示资源文档信息</p>
+<p>kubectl explain rs<br>edit命令:用于编辑资源信息</p>
+<h1 id="编辑Deployment-nginx的一些信息"><a href="#编辑Deployment-nginx的一些信息" class="headerlink" title="编辑Deployment nginx的一些信息"></a>编辑Deployment nginx的一些信息</h1><p>kubectl edit deployment nginx</p>
+<h1 id="编辑service类型的nginx的一些信息"><a href="#编辑service类型的nginx的一些信息" class="headerlink" title="编辑service类型的nginx的一些信息"></a>编辑service类型的nginx的一些信息</h1><p>kubectl edit service/nginx<br>设置命令：label，annotate，completion<br>label命令:用于更新（增加、修改或删除）资源上的 label（标签）</p>
+<p>label 必须以字母或数字开头，可以使用字母、数字、连字符、点和下划线，最长63个字符。<br>如果–overwrite 为 true，则可以覆盖已有的 label，否则尝试覆盖 label 将会报错。<br>如果指定了–resource-version，则更新将使用此资源版本，否则将使用现有的资源版本。</p>
+<h1 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h1><p>label [–overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 … KEY_N=VAL_N [–resource-version=version]</p>
+<h1 id="给名为foo的Pod添加label-unhealthy-true"><a href="#给名为foo的Pod添加label-unhealthy-true" class="headerlink" title="给名为foo的Pod添加label unhealthy=true"></a>给名为foo的Pod添加label unhealthy=true</h1><p>kubectl label pods foo unhealthy=true</p>
+<h1 id="给名为foo的Pod修改label-为-‘status’-value-‘unhealthy’，且覆盖现有的value"><a href="#给名为foo的Pod修改label-为-‘status’-value-‘unhealthy’，且覆盖现有的value" class="headerlink" title="给名为foo的Pod修改label 为 ‘status’ / value ‘unhealthy’，且覆盖现有的value"></a>给名为foo的Pod修改label 为 ‘status’ / value ‘unhealthy’，且覆盖现有的value</h1><p>kubectl label –overwrite pods foo status=unhealthy</p>
+<h1 id="给-namespace-中的所有-pod-添加-label"><a href="#给-namespace-中的所有-pod-添加-label" class="headerlink" title="给 namespace 中的所有 pod 添加 label"></a>给 namespace 中的所有 pod 添加 label</h1><p>kubectl label  pods –all status=unhealthy</p>
+<h1 id="仅当resource-version-1时才更新-名为foo的Pod上的label"><a href="#仅当resource-version-1时才更新-名为foo的Pod上的label" class="headerlink" title="仅当resource-version=1时才更新 名为foo的Pod上的label"></a>仅当resource-version=1时才更新 名为foo的Pod上的label</h1><p>kubectl label pods foo status=unhealthy –resource-version=1</p>
+<h1 id="删除名为“bar”的label-。（使用“-”减号相连）"><a href="#删除名为“bar”的label-。（使用“-”减号相连）" class="headerlink" title="删除名为“bar”的label 。（使用“ - ”减号相连）"></a>删除名为“bar”的label 。（使用“ - ”减号相连）</h1><p>kubectl label pods foo bar-<br>annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。</p>
+<p>Annotations由key/value组成。<br>Annotations的目的是存储辅助数据，特别是通过工具和系统扩展操作的数据，更多介绍在这里。<br>如果–overwrite为true，现有的annotations可以被覆盖，否则试图覆盖annotations将会报错。<br>如果设置了–resource-version，则更新将使用此resource version，否则将使用原有的resource version。</p>
+<h1 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h1><p>annotate [–overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 … KEY_N=VAL_N [–resource-version=version]</p>
+<h1 id="更新Pod“foo”，设置annotation-“description”的value-“my-frontend”，如果同一个annotation多次设置，则只使用最后设置的value值"><a href="#更新Pod“foo”，设置annotation-“description”的value-“my-frontend”，如果同一个annotation多次设置，则只使用最后设置的value值" class="headerlink" title="更新Pod“foo”，设置annotation “description”的value “my frontend”，如果同一个annotation多次设置，则只使用最后设置的value值"></a>更新Pod“foo”，设置annotation “description”的value “my frontend”，如果同一个annotation多次设置，则只使用最后设置的value值</h1><p>kubectl annotate pods foo description=’my frontend’</p>
+<h1 id="根据“pod-json”中的type和name更新pod的annotation"><a href="#根据“pod-json”中的type和name更新pod的annotation" class="headerlink" title="根据“pod.json”中的type和name更新pod的annotation"></a>根据“pod.json”中的type和name更新pod的annotation</h1><p>kubectl annotate -f pod.json description=’my frontend’</p>
+<h1 id="更新Pod”foo”，设置annotation“description”的value“my-frontend-running-nginx”，覆盖现有的值"><a href="#更新Pod”foo”，设置annotation“description”的value“my-frontend-running-nginx”，覆盖现有的值" class="headerlink" title="更新Pod”foo”，设置annotation“description”的value“my frontend running nginx”，覆盖现有的值"></a>更新Pod”foo”，设置annotation“description”的value“my frontend running nginx”，覆盖现有的值</h1><p>kubectl annotate –overwrite pods foo description=’my frontend running nginx’</p>
+<h1 id="更新-namespace中的所有pod"><a href="#更新-namespace中的所有pod" class="headerlink" title="更新 namespace中的所有pod"></a>更新 namespace中的所有pod</h1><p>kubectl annotate pods –all description=’my frontend running nginx’</p>
+<h1 id="只有当resource-version为1时，才更新pod-‘-foo-‘"><a href="#只有当resource-version为1时，才更新pod-‘-foo-‘" class="headerlink" title="只有当resource-version为1时，才更新pod ‘ foo ‘"></a>只有当resource-version为1时，才更新pod ‘ foo ‘</h1><p>kubectl annotate pods foo description=’my frontend running nginx’ –resource-version=1</p>
+<h1 id="通过删除名为“description”的annotations来更新pod-‘-foo-‘。-不需要-overwrite-flag。"><a href="#通过删除名为“description”的annotations来更新pod-‘-foo-‘。-不需要-overwrite-flag。" class="headerlink" title="通过删除名为“description”的annotations来更新pod ‘ foo ‘。#不需要- overwrite flag。"></a>通过删除名为“description”的annotations来更新pod ‘ foo ‘。#不需要- overwrite flag。</h1><p>kubectl annotate pods foo description-<br>completion命令：用于设置kubectl命令自动补全</p>
+<p>$ source &lt;(kubectl completion bash) # setup autocomplete in bash, bash-completion package should be installed first.<br>$ source &lt;(kubectl completion zsh)  # setup autocomplete in zsh<br>kubectl 部署命令：rollout，rolling-update，scale，autoscale<br>rollout命令:用于对资源进行管理</p>
+<p>可用资源包括：deployments，daemonsets。</p>
+<p>子命令：</p>
+<p>history（查看历史版本）<br>pause（暂停资源）<br>resume（恢复暂停资源）<br>status（查看资源状态）<br>undo（回滚版本）</p>
+<h1 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h1><p>kubectl rollout SUBCOMMAND</p>
+<h1 id="回滚到之前的deployment"><a href="#回滚到之前的deployment" class="headerlink" title="回滚到之前的deployment"></a>回滚到之前的deployment</h1><p>kubectl rollout undo deployment/abc</p>
+<h1 id="查看daemonet的状态"><a href="#查看daemonet的状态" class="headerlink" title="查看daemonet的状态"></a>查看daemonet的状态</h1><p>kubectl rollout status daemonset/foo<br>rolling-update命令:执行指定ReplicationController的滚动更新。</p>
+<p>该命令创建了一个新的RC， 然后一次更新一个pod方式逐步使用新的PodTemplate，最终实现Pod滚动更新，new-controller.json需要与之前RC在相同的namespace下。</p>
+<h1 id="语法-5"><a href="#语法-5" class="headerlink" title="语法"></a>语法</h1><p>rolling-update OLD_CONTROLLER_NAME ([NEW_CONTROLLER_NAME] –image=NEW_CONTAINER_IMAGE | -f NEW_CONTROLLER_SPEC)</p>
+<h1 id="使用frontend-v2-json中的新RC数据更新frontend-v1的pod"><a href="#使用frontend-v2-json中的新RC数据更新frontend-v1的pod" class="headerlink" title="使用frontend-v2.json中的新RC数据更新frontend-v1的pod"></a>使用frontend-v2.json中的新RC数据更新frontend-v1的pod</h1><p>kubectl rolling-update frontend-v1 -f frontend-v2.json</p>
+<h1 id="使用JSON数据更新frontend-v1的pod"><a href="#使用JSON数据更新frontend-v1的pod" class="headerlink" title="使用JSON数据更新frontend-v1的pod"></a>使用JSON数据更新frontend-v1的pod</h1><p>cat frontend-v2.json | kubectl rolling-update frontend-v1 -f -</p>
+<h1 id="其他的一些滚动更新"><a href="#其他的一些滚动更新" class="headerlink" title="其他的一些滚动更新"></a>其他的一些滚动更新</h1><p>kubectl rolling-update frontend-v1 frontend-v2 –image=image:v2</p>
+<p>kubectl rolling-update frontend –image=image:v2</p>
+<p>kubectl rolling-update frontend-v1 frontend-v2 –rollback<br>scale命令：扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量</p>
+<p>scale也可以指定多个前提条件，如：当前副本数量或 –resource-version ，进行伸缩比例设置前，系统会先验证前提条件是否成立。这个就是弹性伸缩策略</p>
+<h1 id="语法-6"><a href="#语法-6" class="headerlink" title="语法"></a>语法</h1><p>kubectl scale [–resource-version=version] [–current-replicas=count] –replicas=COUNT (-f FILENAME | TYPE NAME)</p>
+<h1 id="将名为foo中的pod副本数设置为3。"><a href="#将名为foo中的pod副本数设置为3。" class="headerlink" title="将名为foo中的pod副本数设置为3。"></a>将名为foo中的pod副本数设置为3。</h1><p>kubectl scale –replicas=3 rs/foo<br>kubectl scale deploy/nginx –replicas=30</p>
+<h1 id="将由“foo-yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3"><a href="#将由“foo-yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3" class="headerlink" title="将由“foo.yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3"></a>将由“foo.yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3</h1><p>kubectl scale –replicas=3 -f foo.yaml</p>
+<h1 id="如果当前副本数为2，则将其扩展至3。"><a href="#如果当前副本数为2，则将其扩展至3。" class="headerlink" title="如果当前副本数为2，则将其扩展至3。"></a>如果当前副本数为2，则将其扩展至3。</h1><p>kubectl scale –current-replicas=2 –replicas=3 deployment/mysql</p>
+<h1 id="设置多个RC中Pod副本数量"><a href="#设置多个RC中Pod副本数量" class="headerlink" title="设置多个RC中Pod副本数量"></a>设置多个RC中Pod副本数量</h1><p>kubectl scale –replicas=5 rc/foo rc/bar rc/baz<br>autoscale命令： 这个比scale更加强大，也是弹性伸缩策略 ，它是根据流量的多少来自动进行扩展或者缩容</p>
+<p>指定Deployment、ReplicaSet或ReplicationController，并创建已经定义好资源的自动伸缩器。使用自动伸缩器可以根据需要自动增加或减少系统中部署的pod数量。</p>
+<h1 id="语法-7"><a href="#语法-7" class="headerlink" title="语法"></a>语法</h1><p>kubectl autoscale (-f FILENAME | TYPE NAME | TYPE/NAME) [–min=MINPODS] –max=MAXPODS [–cpu-percent=CPU] [flags]</p>
+<h1 id="使用-Deployment-“foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间"><a href="#使用-Deployment-“foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间" class="headerlink" title="使用 Deployment “foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间"></a>使用 Deployment “foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间</h1><p>kubectl autoscale deployment foo –min=2 –max=10</p>
+<h1 id="使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％"><a href="#使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％" class="headerlink" title="使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％"></a>使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％</h1><p>kubectl autoscale rc foo –max=5 –cpu-percent=80<br>集群管理命令：certificate，cluster-info，top，cordon，uncordon，drain，taint<br>certificate命令：用于证书资源管理，授权等</p>
+<p>[root@master ~]# kubectl certificate –help<br>Modify certificate resources.</p>
+<p>Available Commands:<br>  approve     Approve a certificate signing request<br>  deny        Deny a certificate signing request</p>
+<p>Usage:<br>  kubectl certificate SUBCOMMAND [options]</p>
+<p>Use “kubectl <command> –help” for more information about a given command.<br>Use “kubectl options” for a list of global command-line options (applies to all commands).</p>
+<h1 id="例如，当有node节点要向master请求，那么是需要master节点授权的"><a href="#例如，当有node节点要向master请求，那么是需要master节点授权的" class="headerlink" title="例如，当有node节点要向master请求，那么是需要master节点授权的"></a>例如，当有node节点要向master请求，那么是需要master节点授权的</h1><p>kubectl  certificate approve node-csr-81F5uBehyEyLWco5qavBsxc1GzFcZk3aFM3XW5rT3mw node-csr-Ed0kbFhc_q7qx14H3QpqLIUs0uKo036O2SnFpIheM18<br>cluster-info命令：显示集群信息</p>
+<p>kubectl cluster-info</p>
+<p>[root@master ~]# kubectl cluster-info<br>Kubernetes master is running at <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a><br>To further debug and diagnose cluster problems, use ‘kubectl cluster-info dump’.<br>top命令：用于查看资源的cpu，内存磁盘等资源的使用率</p>
+<p>kubectl top pod –all-namespaces<br>它需要heapster运行才行<br>cordon命令：用于标记某个节点不可调度</p>
+<p>uncordon命令：用于标签节点可以调度</p>
+<p>drain命令： 用于在维护期间排除节点。</p>
+<p>taint命令：参见：<a href="https://blog.frognew.com/2018/05/taint-and-toleration.html" target="_blank" rel="noopener">https://blog.frognew.com/2018/05/taint-and-toleration.html</a></p>
+<p>集群故障排查和调试命令：describe，logs，exec，attach，port-foward，proxy，cp，auth<br>describe命令：显示特定资源的详细信息</p>
+<h1 id="语法-8"><a href="#语法-8" class="headerlink" title="语法"></a>语法</h1><p>kubectl describe TYPE NAME_PREFIX<br>（首先检查是否有精确匹配TYPE和NAME_PREFIX的资源，如果没有，将会输出所有名称以NAME_PREFIX开头的资源详细信息）<br>支持的资源包括但不限于（大小写不限）：pods (po)、services (svc)、 replicationcontrollers (rc)、nodes (no)、events (ev)、componentstatuses (cs)、 limitranges (limits)、persistentvolumes (pv)、persistentvolumeclaims (pvc)、 resourcequotas (quota)和secrets。<br>#查看my-nginx pod的详细状态<br>kubectl describe po my-nginx<br>logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名</p>
+<h1 id="语法-9"><a href="#语法-9" class="headerlink" title="语法"></a>语法</h1><p>kubectl logs [-f] [-p] POD [-c CONTAINER]</p>
+<h1 id="返回仅包含一个容器的pod-nginx的日志快照"><a href="#返回仅包含一个容器的pod-nginx的日志快照" class="headerlink" title="返回仅包含一个容器的pod nginx的日志快照"></a>返回仅包含一个容器的pod nginx的日志快照</h1><p>$ kubectl logs nginx</p>
+<h1 id="返回pod-ruby中已经停止的容器web-1的日志快照"><a href="#返回pod-ruby中已经停止的容器web-1的日志快照" class="headerlink" title="返回pod ruby中已经停止的容器web-1的日志快照"></a>返回pod ruby中已经停止的容器web-1的日志快照</h1><p>$ kubectl logs -p -c ruby web-1</p>
+<h1 id="持续输出pod-ruby中的容器web-1的日志"><a href="#持续输出pod-ruby中的容器web-1的日志" class="headerlink" title="持续输出pod ruby中的容器web-1的日志"></a>持续输出pod ruby中的容器web-1的日志</h1><p>$ kubectl logs -f -c ruby web-1</p>
+<h1 id="仅输出pod-nginx中最近的20条日志"><a href="#仅输出pod-nginx中最近的20条日志" class="headerlink" title="仅输出pod nginx中最近的20条日志"></a>仅输出pod nginx中最近的20条日志</h1><p>$ kubectl logs –tail=20 nginx</p>
+<h1 id="输出pod-nginx中最近一小时内产生的所有日志"><a href="#输出pod-nginx中最近一小时内产生的所有日志" class="headerlink" title="输出pod nginx中最近一小时内产生的所有日志"></a>输出pod nginx中最近一小时内产生的所有日志</h1><p>$ kubectl logs –since=1h nginx</p>
+<h1 id="参数选项"><a href="#参数选项" class="headerlink" title="参数选项"></a>参数选项</h1><p>  -c, –container=””: 容器名。<br>  -f, –follow[=false]: 指定是否持续输出日志（实时日志）。<br>      –interactive[=true]: 如果为true，当需要时提示用户进行输入。默认为true。<br>      –limit-bytes=0: 输出日志的最大字节数。默认无限制。<br>  -p, –previous[=false]: 如果为true，输出pod中曾经运行过，但目前已终止的容器的日志。<br>      –since=0: 仅返回相对时间范围，如5s、2m或3h，之内的日志。默认返回所有日志。只能同时使用since和since-time中的一种。<br>      –since-time=””: 仅返回指定时间（RFC3339格式）之后的日志。默认返回所有日志。只能同时使用since和since-time中的一种。<br>      –tail=-1: 要显示的最新的日志条数。默认为-1，显示所有的日志。<br>      –timestamps[=false]: 在日志中包含时间戳。<br>exec命令：进入容器进行交互，在容器中执行命令</p>
+<h1 id="语法-10"><a href="#语法-10" class="headerlink" title="语法"></a>语法</h1><p>kubectl exec POD [-c CONTAINER] – COMMAND [args…]<br>#命令选项<br>  -c, –container=””: 容器名。如果未指定，使用pod中的一个容器。<br>  -p, –pod=””: Pod名。<br>  -i, –stdin[=false]: 将控制台输入发送到容器。<br>  -t, –tty[=false]: 将标准输入控制台作为容器的控制台输入。</p>
+<h1 id="进入nginx容器，执行一些命令操作"><a href="#进入nginx容器，执行一些命令操作" class="headerlink" title="进入nginx容器，执行一些命令操作"></a>进入nginx容器，执行一些命令操作</h1><p>kubectl exec -it nginx-deployment-58d6d6ccb8-lc5fp bash<br>attach命令：连接到一个正在运行的容器。</p>
+<p>#语法<br>kubectl attach POD -c CONTAINER</p>
+<h1 id="参数选项-1"><a href="#参数选项-1" class="headerlink" title="参数选项"></a>参数选项</h1><p>-c, –container=””: 容器名。如果省略，则默认选择第一个 pod<br>  -i, –stdin[=false]: 将控制台输入发送到容器。<br>  -t, –tty[=false]: 将标准输入控制台作为容器的控制台输入。</p>
+<h1 id="获取正在运行中的pod-123456-7890的输出，默认连接到第一个容器"><a href="#获取正在运行中的pod-123456-7890的输出，默认连接到第一个容器" class="headerlink" title="获取正在运行中的pod 123456-7890的输出，默认连接到第一个容器"></a>获取正在运行中的pod 123456-7890的输出，默认连接到第一个容器</h1><p>kubectl attach 123456-7890</p>
+<h1 id="获取pod-123456-7890中ruby-container的输出"><a href="#获取pod-123456-7890中ruby-container的输出" class="headerlink" title="获取pod 123456-7890中ruby-container的输出"></a>获取pod 123456-7890中ruby-container的输出</h1><p>kubectl attach 123456-7890 -c ruby-container</p>
+<h1 id="切换到终端模式，将控制台输入发送到pod-123456-7890的ruby-container的“bash”命令，并将其输出到控制台"><a href="#切换到终端模式，将控制台输入发送到pod-123456-7890的ruby-container的“bash”命令，并将其输出到控制台" class="headerlink" title="切换到终端模式，将控制台输入发送到pod 123456-7890的ruby-container的“bash”命令，并将其输出到控制台/"></a>切换到终端模式，将控制台输入发送到pod 123456-7890的ruby-container的“bash”命令，并将其输出到控制台/</h1><h1 id="错误控制台的信息发送回客户端。"><a href="#错误控制台的信息发送回客户端。" class="headerlink" title="错误控制台的信息发送回客户端。"></a>错误控制台的信息发送回客户端。</h1><p>kubectl attach 123456-7890 -c ruby-container -i -t<br>cp命令：拷贝文件或者目录到pod容器中</p>
+<p>用于pod和外部的文件交换,类似于docker 的cp，就是将容器中的内容和外部的内容进行交换。</p>
+<p>其他命令：api-servions，config，help，plugin，version<br>api-servions命令：打印受支持的api版本信息</p>
+<h1 id="kubectl-api-versions"><a href="#kubectl-api-versions" class="headerlink" title="kubectl api-versions"></a>kubectl api-versions</h1><p>[root@master ~]# kubectl api-versions<br>admissionregistration.k8s.io/v1beta1<br>apiextensions.k8s.io/v1beta1<br>apiregistration.k8s.io/v1beta1<br>apps/v1<br>apps/v1beta1<br>apps/v1beta2<br>authentication.k8s.io/v1<br>authentication.k8s.io/v1beta1<br>authorization.k8s.io/v1<br>authorization.k8s.io/v1beta1<br>autoscaling/v1<br>autoscaling/v2beta1<br>batch/v1<br>batch/v1beta1<br>certificates.k8s.io/v1beta1<br>events.k8s.io/v1beta1<br>extensions/v1beta1<br>networking.k8s.io/v1<br>policy/v1beta1<br>rbac.authorization.k8s.io/v1<br>rbac.authorization.k8s.io/v1beta1<br>storage.k8s.io/v1<br>storage.k8s.io/v1beta1<br>v1<br>help命令：用于查看命令帮助</p>
+<h1 id="显示全部的命令帮助提示"><a href="#显示全部的命令帮助提示" class="headerlink" title="显示全部的命令帮助提示"></a>显示全部的命令帮助提示</h1><p>kubectl –help</p>
+<h1 id="具体的子命令帮助，例如"><a href="#具体的子命令帮助，例如" class="headerlink" title="具体的子命令帮助，例如"></a>具体的子命令帮助，例如</h1><p>kubectl create –help<br>config:用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）</p>
+<p>version命令：打印客户端和服务端版本信息</p>
+<p>[root@master ~]# kubectl version<br>Client Version: version.Info{Major:”1”, Minor:”15”, GitVersion:”v1.15.3”, GitCommit:”2d3c76f9091b6bec110a5e63777c332469e0cba2”, GitTreeState:”clean”, BuildDate:”2019-08-19T11:13:54Z”, GoVersion:”go1.12.9”, Compiler:”gc”, Platform:”linux/amd64”}<br>Server Version: version.Info{Major:”1”, Minor:”9”, GitVersion:”v1.9.0”, GitCommit:”925c127ec6b946659ad0fd596fa959be43f0cc05”, GitTreeState:”clean”, BuildDate:”2017-12-15T20:55:30Z”, GoVersion:”go1.9.2”, Compiler:”gc”, Platform:”linux/amd64”}<br>plugin命令：运行一个命令行插件</p>
+<p>高级命令：apply，patch，replace，convert<br>apply命令： 通过文件名或者标准输入对资源应用配置</p>
+<p>通过文件名或控制台输入，对资源进行配置。 如果资源不存在，将会新建一个。可以使用 JSON 或者 YAML 格式。</p>
+<h1 id="语法-11"><a href="#语法-11" class="headerlink" title="语法"></a>语法</h1><p>kubectl apply -f FILENAME</p>
+<h1 id="将pod-json中的配置应用到pod"><a href="#将pod-json中的配置应用到pod" class="headerlink" title="将pod.json中的配置应用到pod"></a>将pod.json中的配置应用到pod</h1><p>kubectl apply -f ./pod.json</p>
+<h1 id="将控制台输入的JSON配置应用到Pod"><a href="#将控制台输入的JSON配置应用到Pod" class="headerlink" title="将控制台输入的JSON配置应用到Pod"></a>将控制台输入的JSON配置应用到Pod</h1><p>cat pod.json | kubectl apply -f -</p>
+<p>选项<br>-f, –filename=[]: 包含配置信息的文件名，目录名或者URL。<br>      –include-extended-apis[=true]: If true, include definitions of new APIs via calls to the API server. [default true]<br>  -o, –output=””: 输出模式。”-o name”为快捷输出(资源/name).<br>      –record[=false]: 在资源注释中记录当前 kubectl 命令。<br>  -R, –recursive[=false]: Process the directory used in -f, –filename recursively. Useful when you want to manage related manifests organized within the same directory.<br>      –schema-cache-dir=”~/.kube/schema”: 非空则将API schema缓存为指定文件，默认缓存到’$HOME/.kube/schema’<br>      –validate[=true]: 如果为true，在发送到服务端前先使用schema来验证输入。<br>patch命令： 使用补丁修改，更新资源的字段，也就是修改资源的部分内容</p>
+<h1 id="语法-12"><a href="#语法-12" class="headerlink" title="语法"></a>语法</h1><p>kubectl patch (-f FILENAME | TYPE NAME) -p PATCH</p>
+<h1 id="Partially-update-a-node-using-strategic-merge-patch"><a href="#Partially-update-a-node-using-strategic-merge-patch" class="headerlink" title="Partially update a node using strategic merge patch"></a>Partially update a node using strategic merge patch</h1><p>kubectl patch node k8s-node-1 -p ‘{“spec”:{“unschedulable”:true}}’</p>
+<h1 id="Update-a-container’s-image-spec-containers-name-is-required-because-it’s-a-merge-key"><a href="#Update-a-container’s-image-spec-containers-name-is-required-because-it’s-a-merge-key" class="headerlink" title="Update a container’s image; spec.containers[*].name is required because it’s a merge key"></a>Update a container’s image; spec.containers[*].name is required because it’s a merge key</h1><p>kubectl patch pod valid-pod -p ‘{“spec”:{“containers”:[{“name”:”kubernetes-serve-hostname”,”image”:”new image”}]}}’<br>replace命令： 通过文件或者标准输入替换原有资源</p>
+<h1 id="语法-13"><a href="#语法-13" class="headerlink" title="语法"></a>语法</h1><p>kubectl replace -f FILENAME</p>
+<h1 id="Replace-a-pod-using-the-data-in-pod-json"><a href="#Replace-a-pod-using-the-data-in-pod-json" class="headerlink" title="Replace a pod using the data in pod.json."></a>Replace a pod using the data in pod.json.</h1><p>kubectl replace -f ./pod.json</p>
+<h1 id="Replace-a-pod-based-on-the-JSON-passed-into-stdin"><a href="#Replace-a-pod-based-on-the-JSON-passed-into-stdin" class="headerlink" title="Replace a pod based on the JSON passed into stdin."></a>Replace a pod based on the JSON passed into stdin.</h1><p>cat pod.json | kubectl replace -f -</p>
+<h1 id="Update-a-single-container-pod’s-image-version-tag-to-v4"><a href="#Update-a-single-container-pod’s-image-version-tag-to-v4" class="headerlink" title="Update a single-container pod’s image version (tag) to v4"></a>Update a single-container pod’s image version (tag) to v4</h1><p>kubectl get pod mypod -o yaml | sed ‘s/(image: myimage):.*$/\1:v4/‘ | kubectl replace -f -</p>
+<h1 id="Force-replace-delete-and-then-re-create-the-resource"><a href="#Force-replace-delete-and-then-re-create-the-resource" class="headerlink" title="Force replace, delete and then re-create the resource"></a>Force replace, delete and then re-create the resource</h1><p>kubectl replace –force -f ./pod.json<br>convert命令： 不同的版本之间转换配置文件</p>
+<h1 id="语法-14"><a href="#语法-14" class="headerlink" title="语法"></a>语法</h1><p>kubectl convert -f FILENAME</p>
+<h1 id="Convert-‘pod-yaml’-to-latest-version-and-print-to-stdout"><a href="#Convert-‘pod-yaml’-to-latest-version-and-print-to-stdout" class="headerlink" title="Convert ‘pod.yaml’ to latest version and print to stdout."></a>Convert ‘pod.yaml’ to latest version and print to stdout.</h1><p>kubectl convert -f pod.yaml</p>
+<h1 id="Convert-the-live-state-of-the-resource-specified-by-‘pod-yaml’-to-the-latest-version"><a href="#Convert-the-live-state-of-the-resource-specified-by-‘pod-yaml’-to-the-latest-version" class="headerlink" title="Convert the live state of the resource specified by ‘pod.yaml’ to the latest version"></a>Convert the live state of the resource specified by ‘pod.yaml’ to the latest version</h1><h1 id="and-print-to-stdout-in-json-format"><a href="#and-print-to-stdout-in-json-format" class="headerlink" title="and print to stdout in json format."></a>and print to stdout in json format.</h1><p>kubectl convert -f pod.yaml –local -o json</p>
+<h1 id="Convert-all-files-under-current-directory-to-latest-version-and-create-them-all"><a href="#Convert-all-files-under-current-directory-to-latest-version-and-create-them-all" class="headerlink" title="Convert all files under current directory to latest version and create them all."></a>Convert all files under current directory to latest version and create them all.</h1><p>kubectl convert -f . | kubectl create -f -</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/07/11/Shell%E8%84%9A%E6%9C%AC%E5%AE%89%E8%A3%85lnmp/" rel="next" title="Shell脚本安装lnmp">
+                <i class="fa fa-chevron-left"></i> Shell脚本安装lnmp
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">运维笔记 QQ:1714594511 喵星的技术宅</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-k8s"><span class="nav-number">1.</span> <span class="nav-text">docker+k8s</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Deployment和Service资源"><span class="nav-number"></span> <span class="nav-text">创建Deployment和Service资源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效"><span class="nav-number"></span> <span class="nav-text">根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#也可以通过具体的资源名称来进行删除，使用这个删除资源，需要同时删除pod和service资源才行"><span class="nav-number"></span> <span class="nav-text">也可以通过具体的资源名称来进行删除，使用这个删除资源，需要同时删除pod和service资源才行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看所有的资源信息"><span class="nav-number"></span> <span class="nav-text">查看所有的资源信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看pod列表"><span class="nav-number"></span> <span class="nav-text">查看pod列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#显示pod节点的标签信息"><span class="nav-number"></span> <span class="nav-text">显示pod节点的标签信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#根据指定标签匹配到具体的pod"><span class="nav-number"></span> <span class="nav-text">根据指定标签匹配到具体的pod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看node节点列表"><span class="nav-number"></span> <span class="nav-text">查看node节点列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#显示node节点的标签信息"><span class="nav-number"></span> <span class="nav-text">显示node节点的标签信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）"><span class="nav-number"></span> <span class="nav-text">查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息"><span class="nav-number"></span> <span class="nav-text">查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看命名空间"><span class="nav-number"></span> <span class="nav-text">查看命名空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看所有pod所属的命名空间"><span class="nav-number"></span> <span class="nav-text">查看所有pod所属的命名空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看所有pod所属的命名空间并且查看都在哪些节点上运行"><span class="nav-number"></span> <span class="nav-text">查看所有pod所属的命名空间并且查看都在哪些节点上运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看目前所有的replica-set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息"><span class="nav-number"></span> <span class="nav-text">查看目前所有的replica set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看目前所有的deployment"><span class="nav-number"></span> <span class="nav-text">查看目前所有的deployment</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息"><span class="nav-number"></span> <span class="nav-text">查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本语法"><span class="nav-number"></span> <span class="nav-text">基本语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例，运行一个名称为nginx，副本数为3，标签为app-example，镜像为nginx-1-10，端口为80的容器实例"><span class="nav-number"></span> <span class="nav-text">示例，运行一个名称为nginx，副本数为3，标签为app&#x3D;example，镜像为nginx:1.10，端口为80的容器实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建一个nginx服务并且暴露端口让外界可以访问"><span class="nav-number"></span> <span class="nav-text">创建一个nginx服务并且暴露端口让外界可以访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用kubectl-set-–help查看，它的子命令，env，image，resources，selector，serviceaccount，subject。"><span class="nav-number"></span> <span class="nav-text">使用kubectl set –help查看，它的子命令，env，image，resources，selector，serviceaccount，subject。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将deployment的nginx容器cpu限制为“200m”，将内存设置为“512Mi”"><span class="nav-number"></span> <span class="nav-text">将deployment的nginx容器cpu限制为“200m”，将内存设置为“512Mi”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为nginx中的所有容器设置-Requests和Limits"><span class="nav-number"></span> <span class="nav-text">为nginx中的所有容器设置 Requests和Limits</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除nginx中容器的计算资源值"><span class="nav-number"></span> <span class="nav-text">删除nginx中容器的计算资源值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-1"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将deployment中的nginx容器镜像设置为“nginx：1-9-1”。"><span class="nav-number"></span> <span class="nav-text">将deployment中的nginx容器镜像设置为“nginx：1.9.1”。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#所有deployment和rc的nginx容器镜像更新为“nginx：1-9-1”"><span class="nav-number"></span> <span class="nav-text">所有deployment和rc的nginx容器镜像更新为“nginx：1.9.1”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将daemonset-abc的所有容器镜像更新为“nginx：1-9-1”"><span class="nav-number"></span> <span class="nav-text">将daemonset abc的所有容器镜像更新为“nginx：1.9.1”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#从本地文件中更新nginx容器镜像"><span class="nav-number"></span> <span class="nav-text">从本地文件中更新nginx容器镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编辑Deployment-nginx的一些信息"><span class="nav-number"></span> <span class="nav-text">编辑Deployment nginx的一些信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编辑service类型的nginx的一些信息"><span class="nav-number"></span> <span class="nav-text">编辑service类型的nginx的一些信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-2"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#给名为foo的Pod添加label-unhealthy-true"><span class="nav-number"></span> <span class="nav-text">给名为foo的Pod添加label unhealthy&#x3D;true</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#给名为foo的Pod修改label-为-‘status’-value-‘unhealthy’，且覆盖现有的value"><span class="nav-number"></span> <span class="nav-text">给名为foo的Pod修改label 为 ‘status’ &#x2F; value ‘unhealthy’，且覆盖现有的value</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#给-namespace-中的所有-pod-添加-label"><span class="nav-number"></span> <span class="nav-text">给 namespace 中的所有 pod 添加 label</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#仅当resource-version-1时才更新-名为foo的Pod上的label"><span class="nav-number"></span> <span class="nav-text">仅当resource-version&#x3D;1时才更新 名为foo的Pod上的label</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除名为“bar”的label-。（使用“-”减号相连）"><span class="nav-number"></span> <span class="nav-text">删除名为“bar”的label 。（使用“ - ”减号相连）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-3"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更新Pod“foo”，设置annotation-“description”的value-“my-frontend”，如果同一个annotation多次设置，则只使用最后设置的value值"><span class="nav-number"></span> <span class="nav-text">更新Pod“foo”，设置annotation “description”的value “my frontend”，如果同一个annotation多次设置，则只使用最后设置的value值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#根据“pod-json”中的type和name更新pod的annotation"><span class="nav-number"></span> <span class="nav-text">根据“pod.json”中的type和name更新pod的annotation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更新Pod”foo”，设置annotation“description”的value“my-frontend-running-nginx”，覆盖现有的值"><span class="nav-number"></span> <span class="nav-text">更新Pod”foo”，设置annotation“description”的value“my frontend running nginx”，覆盖现有的值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更新-namespace中的所有pod"><span class="nav-number"></span> <span class="nav-text">更新 namespace中的所有pod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#只有当resource-version为1时，才更新pod-‘-foo-‘"><span class="nav-number"></span> <span class="nav-text">只有当resource-version为1时，才更新pod ‘ foo ‘</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通过删除名为“description”的annotations来更新pod-‘-foo-‘。-不需要-overwrite-flag。"><span class="nav-number"></span> <span class="nav-text">通过删除名为“description”的annotations来更新pod ‘ foo ‘。#不需要- overwrite flag。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-4"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#回滚到之前的deployment"><span class="nav-number"></span> <span class="nav-text">回滚到之前的deployment</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看daemonet的状态"><span class="nav-number"></span> <span class="nav-text">查看daemonet的状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-5"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用frontend-v2-json中的新RC数据更新frontend-v1的pod"><span class="nav-number"></span> <span class="nav-text">使用frontend-v2.json中的新RC数据更新frontend-v1的pod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用JSON数据更新frontend-v1的pod"><span class="nav-number"></span> <span class="nav-text">使用JSON数据更新frontend-v1的pod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他的一些滚动更新"><span class="nav-number"></span> <span class="nav-text">其他的一些滚动更新</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-6"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将名为foo中的pod副本数设置为3。"><span class="nav-number"></span> <span class="nav-text">将名为foo中的pod副本数设置为3。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将由“foo-yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3"><span class="nav-number"></span> <span class="nav-text">将由“foo.yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如果当前副本数为2，则将其扩展至3。"><span class="nav-number"></span> <span class="nav-text">如果当前副本数为2，则将其扩展至3。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置多个RC中Pod副本数量"><span class="nav-number"></span> <span class="nav-text">设置多个RC中Pod副本数量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-7"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-Deployment-“foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间"><span class="nav-number"></span> <span class="nav-text">使用 Deployment “foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％"><span class="nav-number"></span> <span class="nav-text">使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例如，当有node节点要向master请求，那么是需要master节点授权的"><span class="nav-number"></span> <span class="nav-text">例如，当有node节点要向master请求，那么是需要master节点授权的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-8"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-9"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#返回仅包含一个容器的pod-nginx的日志快照"><span class="nav-number"></span> <span class="nav-text">返回仅包含一个容器的pod nginx的日志快照</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#返回pod-ruby中已经停止的容器web-1的日志快照"><span class="nav-number"></span> <span class="nav-text">返回pod ruby中已经停止的容器web-1的日志快照</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#持续输出pod-ruby中的容器web-1的日志"><span class="nav-number"></span> <span class="nav-text">持续输出pod ruby中的容器web-1的日志</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#仅输出pod-nginx中最近的20条日志"><span class="nav-number"></span> <span class="nav-text">仅输出pod nginx中最近的20条日志</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输出pod-nginx中最近一小时内产生的所有日志"><span class="nav-number"></span> <span class="nav-text">输出pod nginx中最近一小时内产生的所有日志</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参数选项"><span class="nav-number"></span> <span class="nav-text">参数选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-10"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进入nginx容器，执行一些命令操作"><span class="nav-number"></span> <span class="nav-text">进入nginx容器，执行一些命令操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参数选项-1"><span class="nav-number"></span> <span class="nav-text">参数选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取正在运行中的pod-123456-7890的输出，默认连接到第一个容器"><span class="nav-number"></span> <span class="nav-text">获取正在运行中的pod 123456-7890的输出，默认连接到第一个容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取pod-123456-7890中ruby-container的输出"><span class="nav-number"></span> <span class="nav-text">获取pod 123456-7890中ruby-container的输出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#切换到终端模式，将控制台输入发送到pod-123456-7890的ruby-container的“bash”命令，并将其输出到控制台"><span class="nav-number"></span> <span class="nav-text">切换到终端模式，将控制台输入发送到pod 123456-7890的ruby-container的“bash”命令，并将其输出到控制台&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#错误控制台的信息发送回客户端。"><span class="nav-number"></span> <span class="nav-text">错误控制台的信息发送回客户端。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kubectl-api-versions"><span class="nav-number"></span> <span class="nav-text">kubectl api-versions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#显示全部的命令帮助提示"><span class="nav-number"></span> <span class="nav-text">显示全部的命令帮助提示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体的子命令帮助，例如"><span class="nav-number"></span> <span class="nav-text">具体的子命令帮助，例如</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-11"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将pod-json中的配置应用到pod"><span class="nav-number"></span> <span class="nav-text">将pod.json中的配置应用到pod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将控制台输入的JSON配置应用到Pod"><span class="nav-number"></span> <span class="nav-text">将控制台输入的JSON配置应用到Pod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-12"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Partially-update-a-node-using-strategic-merge-patch"><span class="nav-number"></span> <span class="nav-text">Partially update a node using strategic merge patch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Update-a-container’s-image-spec-containers-name-is-required-because-it’s-a-merge-key"><span class="nav-number"></span> <span class="nav-text">Update a container’s image; spec.containers[*].name is required because it’s a merge key</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-13"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Replace-a-pod-using-the-data-in-pod-json"><span class="nav-number"></span> <span class="nav-text">Replace a pod using the data in pod.json.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Replace-a-pod-based-on-the-JSON-passed-into-stdin"><span class="nav-number"></span> <span class="nav-text">Replace a pod based on the JSON passed into stdin.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Update-a-single-container-pod’s-image-version-tag-to-v4"><span class="nav-number"></span> <span class="nav-text">Update a single-container pod’s image version (tag) to v4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Force-replace-delete-and-then-re-create-the-resource"><span class="nav-number"></span> <span class="nav-text">Force replace, delete and then re-create the resource</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法-14"><span class="nav-number"></span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Convert-‘pod-yaml’-to-latest-version-and-print-to-stdout"><span class="nav-number"></span> <span class="nav-text">Convert ‘pod.yaml’ to latest version and print to stdout.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Convert-the-live-state-of-the-resource-specified-by-‘pod-yaml’-to-the-latest-version"><span class="nav-number"></span> <span class="nav-text">Convert the live state of the resource specified by ‘pod.yaml’ to the latest version</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#and-print-to-stdout-in-json-format"><span class="nav-number"></span> <span class="nav-text">and print to stdout in json format.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Convert-all-files-under-current-directory-to-latest-version-and-create-them-all"><span class="nav-number"></span> <span class="nav-text">Convert all files under current directory to latest version and create them all.</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+
+[一个人知道自己为什么而活，就可以忍受任何一种生活。]
+&copy; 
+<span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">运维笔记 QQ:1714594511 喵星的技术宅</span>
+
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+</html>
