@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="陈鱼头的博客">
 <meta property="og:description" content="dnsmasq+ipxe无人值守批量安装系统">
 <meta property="article:published_time" content="2021-07-21T03:26:35.000Z">
-<meta property="article:modified_time" content="2021-08-23T00:27:09.668Z">
+<meta property="article:modified_time" content="2021-11-02T13:08:00.246Z">
 <meta property="article:author" content="运维笔记 QQ:1714594511 喵星的技术宅">
 <meta name="twitter:card" content="summary">
 
@@ -372,7 +372,7 @@
         <h2 id="dnsmasq-ipxe无人值守批量安装系统"><a href="#dnsmasq-ipxe无人值守批量安装系统" class="headerlink" title="dnsmasq+ipxe无人值守批量安装系统"></a>dnsmasq+ipxe无人值守批量安装系统</h2><a id="more"></a>
 
 <h2 id="安装脚本"><a href="#安装脚本" class="headerlink" title="安装脚本"></a>安装脚本</h2><p>源码在文章底部</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o ipxe.sh http://103.224.249.63/ipxe.sh &amp;&amp; bash ipxe.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o ipxe.sh http://116.213.41.191/ipxe.sh &amp;&amp; bash ipxe.sh</span><br></pre></td></tr></table></figure>
 <p>简介<br>PXE (preboot execute environment，预启动执行环境) 是由 Intel 公司设计的协议，它可以使计算机通过网络启动。当计算机引导时，BIOS 把 PXE client 调入内存执行，并显示出命令菜单，经用户选择后，PXE client将放置在远端的操作系统通过网络下载到本地运行。除了可以通过网络直接运行操作系统外，也可以用于通过网络来将系统安装到本地。在运维中工作中，通过 PXE 来为机房服务器批量部署系统是非常方便的。<br>环境<br>PXE 对运行环境没有什么需求，只需能提供 tftp, dhcp, http 等服务的系统即可。这里使用 Linux 环境来搭建PXE服务。使用 dnsmasq 这个小巧玲珑的软件提供 tftp 和 dhcp 服务，使用 Nginx 来提供 http 服务。<br>步骤<br>PXE 的启动原理是 PXE client 在网卡的 ROM 中，可以在计算机开机的时候选择通过硬盘引导还是 PXE 等引导方式，比如 DELL 的服务器在出现开机 LOGO 画面后通过键入 F12 来进入 PXE 引导，Vmware 新创建的虚拟机在第一次启动的时候如果没有装载光驱或者ISO镜像，则会尝试通过网络引导。如果是笔记本或者台式机可以在开机的时候进入引导菜单，然后选择通过网卡设备启动。<br>当进入 PXE 引导界面后，PXE client 会向网络中的 dhcp 服务器请求IP地址，dhcp 服务器发现是个 PXE client 的请求会将分配好的IP和引导程序的访问地址返回给 PXE client。这个引导程序一般是名为 pxelinux.0 的文件，这个文件是通过 tftp 协议发送给 PXE client 的。当客户端成功获取到引导文件和引导文件的相关配置文件后就成功加载出引导菜单。这个菜单则是我们通过更改 pxelinux.0 的配置文件来的。下面是通过Vmware引导的效果：</p>
 <p>如果在30秒内没做任何选择则默认从本地磁盘启动，这样就避免了某些将PXE启动作为第一启动项的服务器重启后误重装系统。当选择了某个项目的时候，比如 Install CentOS6.8 for vmware 则向服务器获取根据配置文件中指定的 CentOS 内核文件和启动参数。当需要的数据都准备好后，系统则开始启动 Linux 内核，接下来的操作就跟普通的安装系统没两样了，只不过需要的数据都是通过网络获取的。比如安装 CentOS 过程中需要的所有 rpm 包都是通过 http 服务提供的 CentOS 镜像站提供的了。<br>但是如何通过 PXE 来同时安装成百上千台服务器呢？在安装系统的过程中，总会遇到各种需要交互的地方，比如给硬盘分区，选择语言，创建用户等地方，幸好大部分的系统安装镜像都支持通过 Kickstart 自动应答在安装过程中免人工干预的进行系统安装。就像是你的所有问题的回答我先写成一个文件，然后你需要问的时候先从文件中找答案一样。自动应答文件通常是 ks.cfg 文件，此文件的位置大多通过在启动 Linux 内核的时候通过启动参数的方式告诉内核。<br>接下来就看看 PXE 启动该如何配置。<br>服务配置</p>
 <h2 id="安装-dnsmasq"><a href="#安装-dnsmasq" class="headerlink" title="安装 dnsmasq"></a>安装 dnsmasq</h2><p>可以首先从Linux发行版的官方仓库中找找有没有 dnsmasq 的软件包，如果没有可以下载编译。<br>编译方法：</p>
