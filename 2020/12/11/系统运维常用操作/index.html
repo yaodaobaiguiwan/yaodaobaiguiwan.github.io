@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="陈鱼头的博客">
 <meta property="og:description" content="CentOS6已经进入EOL寿命终了阶段，yum源将失效，可从centos-vault源继续安装软件，下面是已经修改的源，直接下载替换http:&#x2F;&#x2F;xz.itcytblog.cn&#x2F;CentOS6-Base.repo 系统运维常用操作">
 <meta property="article:published_time" content="2020-12-11T03:38:31.000Z">
-<meta property="article:modified_time" content="2021-11-22T02:15:52.548Z">
+<meta property="article:modified_time" content="2022-03-24T06:52:45.622Z">
 <meta property="article:author" content="运维笔记 QQ:1714594511 喵星的技术宅">
 <meta name="twitter:card" content="summary">
 
@@ -96,7 +96,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     version: '5.1.4',
     sidebar: {"position":"right","display":"post","offset":60,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: true,
@@ -396,6 +396,8 @@
 <p>查看日志分析<br>mysql&gt; show global variables like ‘%log%’;</p>
 <p>查看慢日志超时时间<br>mysql&gt; show global variables like ‘long%’;</p>
 <p>其中这个慢查询时间并不是只表示语句自身执行超过的时间(秒)还包含由于其他资源被征用造成阻塞的查询执行时间或其他原因等都被记录到慢查询中。<br>所以这个慢查的时长表示从查询开始到查询结束中间包含可能的任何原因所经历的所有时间。</p>
+<p>配置root支持远程控制<br>grant all privileges on <em>.</em> to ‘root’ @’%’ identified by ‘password’ with grant option;<br>flush privileges;</p>
+<p>通过二进制恢复数据库<br>mysqlbinlog –no-defaults –stop-position=’1673’ mysql-bin.000008 | mysql -u root -p    1673为日志中的end_log_pos</p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>查看当前目录文件大小前十的文件du -a -h | sort -n -r | head -n 10</p>
 <p>查看当前目录下各文件、文件夹的大小<br>du -h –max-depth=1<br>目录总大小可以使用du -sh，其中s代表统计汇总的意思<br>du -h –max-depth=0 *，可以只显示直接子目录文件及文件夹大小统计值</p>
 <p>修复数据表check table 表名     repair table 表名</p>
@@ -516,7 +518,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -527,7 +529,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -699,6 +701,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
