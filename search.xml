@@ -2444,6 +2444,7 @@ ansible_ssh_pass=123456  #节点密码</code></pre><p>sed -i ‘s/#host_key_chec
 <h3 id="build-Dockerfile"><a href="#build-Dockerfile" class="headerlink" title="build Dockerfile"></a>build Dockerfile</h3><p>[ docker build -t &lt;指定以镜像名&gt; . ]  #构建当前的Dockerfile,注意当前路劲为.</p>
 <h2 id="docker镜像的dockerfile文件内容"><a href="#docker镜像的dockerfile文件内容" class="headerlink" title="docker镜像的dockerfile文件内容"></a>docker镜像的dockerfile文件内容</h2><p>docker history 镜像id<br>查看详细信息：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">history</span> --format &#123;&#123;.CreatedBy&#125;&#125; --no-trunc=<span class="literal">true</span> 镜像id |sed <span class="string">"s/\/bin\/sh\ -c\ \#(nop)\ //g"</span>|sed <span class="string">"s/\/bin\/sh\ -c/RUN/g"</span> | tac</span><br></pre></td></tr></table></figure>
+<h2 id="虚悬镜像清理"><a href="#虚悬镜像清理" class="headerlink" title="虚悬镜像清理"></a>虚悬镜像清理</h2><p>虚悬镜像出现于构建容器失败时创建的，没有存在价值。<br>docker images ls -f dangling=true  #查看库中的虚悬镜像<br>docker image prune    #清理所有本地存在的虚悬镜像</p>
 <p>待更新</p>
 ]]></content>
       <categories>
