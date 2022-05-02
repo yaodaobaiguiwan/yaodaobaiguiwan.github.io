@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+  <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-flash.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lvs+Keepalived+Nginx高可用搭建">
+<meta property="og:url" content="http://yoursite.com/2022/05/02/Lvs-Keepalived-Nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="陈鱼头的博客">
+<meta property="og:image" content="http://yoursite.com/2022/05/02/Lvs-Keepalived-Nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E6%90%AD%E5%BB%BA/keepalived.png">
+<meta property="article:published_time" content="2022-05-02T09:12:00.000Z">
+<meta property="article:modified_time" content="2022-05-02T09:16:39.491Z">
+<meta property="article:author" content="运维笔记 QQ:1714594511">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2022/05/02/Lvs-Keepalived-Nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E6%90%AD%E5%BB%BA/keepalived.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":60,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/05/02/Lvs-Keepalived-Nginx高可用搭建/"/>
+
+
+
+
+
+  <title>Lvs+Keepalived+Nginx高可用搭建 | 陈鱼头的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈鱼头的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+	
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/05/02/Lvs-Keepalived-Nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="运维笔记 QQ:1714594511">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈鱼头的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Lvs+Keepalived+Nginx高可用搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-05-02T17:12:00+08:00">
+                2022-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/keepalived/" itemprop="url" rel="index">
+                    <span itemprop="name">keepalived</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<img src="/2022/05/02/Lvs-Keepalived-Nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E6%90%AD%E5%BB%BA/keepalived.png" class="" title="LVS的DR模型配置+Keepalive部署">
+<a id="more"></a>
+<hr>
+<h2 id="keepalive配置文件详解"><a href="#keepalive配置文件详解" class="headerlink" title="keepalive配置文件详解"></a>keepalive配置文件详解</h2><h3 id="第一部分：全局定义块"><a href="#第一部分：全局定义块" class="headerlink" title="第一部分：全局定义块"></a>第一部分：全局定义块</h3><p>1、email通知。作用：有故障，发邮件报警。<br>2、Lvs负载均衡器标识（lvs_id）。在一个网络内，它应该是唯一的。<br>3、花括号“{}”。用来分隔定义块，因此必须成对出现。如果写漏了，keepalived运行时，不会得到预期的结果。由于定义块内存在嵌套关系，因此很容易遗漏结尾处的花括号，这点要特别注意。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">global_defs &#123;            </span><br><span class="line">   notification_email &#123;  <span class="comment">#指定keepalived在发生切换时需要发送email到的对象，一行一个</span></span><br><span class="line">    sysadmin@fire.loc</span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from Alexandre.Cassen@firewall.loc <span class="comment">#指定发件人</span></span><br><span class="line">   smtp_server localhost <span class="comment">#指定smtp服务器地址</span></span><br><span class="line">   smtp_connect_timeout 30 <span class="comment">#指定smtp连接超时时间</span></span><br><span class="line">   router_id LVS_DEVEL <span class="comment">#运行keepalived机器的一个标识，主从配置不能相同</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第二部分：vrrp-sync-group"><a href="#第二部分：vrrp-sync-group" class="headerlink" title="第二部分：vrrp_sync_group"></a>第二部分：vrrp_sync_group</h3><p>确定失败切换（FailOver）包含的路由实例个数。即在有2个负载均衡器的场景，一旦某个负载均衡器失效，需要自动切换到另外一个负载均衡器的实例是哪些？ 实例组group{}至少包含一个vrrp实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vrrp_sync_group VG_1&#123; <span class="comment">#监控多个网段的实例</span></span><br><span class="line">    group &#123;</span><br><span class="line">　　　　VI_1 <span class="comment">#实例名</span></span><br><span class="line">　　　　VI_2</span><br><span class="line">　　　　......</span><br><span class="line">    &#125;</span><br><span class="line">    notify_master /path/xx.sh <span class="comment">#指定当切换到master时，执行的脚本</span></span><br><span class="line">    netify_backup /path/xx.sh <span class="comment">#指定当切换到backup时，执行的脚本</span></span><br><span class="line">    notify_fault <span class="string">"path/xx.sh VG_1"</span> <span class="comment">#故障时执行的脚本</span></span><br><span class="line">    notify /path/xx.sh </span><br><span class="line">    smtp_alert <span class="comment">#使用global_defs中提供的邮件地址和smtp服务器发送邮件通知</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第三部分：vrrp-instance"><a href="#第三部分：vrrp-instance" class="headerlink" title="第三部分：vrrp_instance"></a>第三部分：vrrp_instance</h3><p>虚拟路由实例配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP <span class="comment">#指定那个为master，那个为backup，如果设置了nopreempt这个值不起作用，主备考priority决定</span></span><br><span class="line">    interface eth0 <span class="comment">#设置实例绑定的网卡</span></span><br><span class="line">    dont_track_primary <span class="comment">#忽略vrrp的interface错误（默认不设置）</span></span><br><span class="line">    track_interface&#123; <span class="comment">#设置额外的监控，里面那个网卡出现问题都会切换</span></span><br><span class="line">        eth0</span><br><span class="line">        eth1</span><br><span class="line">    &#125;</span><br><span class="line">    mcast_src_ip <span class="comment">#发送多播包的地址，如果不设置默认使用绑定网卡的primary ip</span></span><br><span class="line">    garp_master_delay <span class="comment">#在切换到master状态后，延迟进行gratuitous ARP请求</span></span><br><span class="line">    virtual_router_id 50 <span class="comment">#VPID标记</span></span><br><span class="line">    priority 99 <span class="comment">#优先级，高优先级竞选为master</span></span><br><span class="line">    advert_int 1 <span class="comment">#检查间隔，默认1秒</span></span><br><span class="line">    nopreempt <span class="comment">#设置为不抢占 注：这个配置只能设置在backup主机上，而且这个主机优先级要比另外一台高</span></span><br><span class="line">    preempt_delay <span class="comment">#抢占延时，默认5分钟</span></span><br><span class="line">    debug <span class="comment">#debug级别</span></span><br><span class="line">    authentication &#123; <span class="comment">#设置认证</span></span><br><span class="line">        auth_type PASS <span class="comment">#认证方式</span></span><br><span class="line">        auth_pass 111111 <span class="comment">#认证密码</span></span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123; <span class="comment">#设置vip</span></span><br><span class="line">        192.168.202.200</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第四部分：virtual-server"><a href="#第四部分：virtual-server" class="headerlink" title="第四部分：virtual_server"></a>第四部分：virtual_server</h3><p>虚拟服务器virtual_server定义块 ，虚拟服务器定义是keepalived框架最重要的项目了，是keepalived.conf必不可少的部分。 该部分是用来管理LVS的，是实现keepalive和LVS相结合的模块。ipvsadm命令可以实现的管理在这里都可以通过参数配置实现，注意：real_server是被包含在viyual_server模块中的，是子模块。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">virtual_server 192.168.202.200 23 &#123;        //VIP地址，要和vrrp_instance模块中的                virtual_ipaddress地址一致</span><br><span class="line">　　　　delay_loop 6 <span class="comment">#健康检查时间间隔 </span></span><br><span class="line">　　　　lb_algo rr <span class="comment">#lvs调度算法rr|wrr|lc|wlc|lblc|sh|dh </span></span><br><span class="line">　　　　lb_kind DR <span class="comment">#负载均衡转发规则NAT|DR|RUN </span></span><br><span class="line">　　　　persistence_timeout 5 <span class="comment">#会话保持时间 </span></span><br><span class="line">　　　　protocol TCP <span class="comment">#使用的协议 </span></span><br><span class="line">　　　　persistence_granularity &lt;NETMASK&gt; <span class="comment">#lvs会话保持粒度 </span></span><br><span class="line">　　　　virtualhost &lt;string&gt; <span class="comment">#检查的web服务器的虚拟主机（host：头） </span></span><br><span class="line">　　　　sorry_server&lt;IPADDR&gt; &lt;port&gt; <span class="comment">#备用机，所有realserver失效后启用</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    real_server 192.168.200.5 23 &#123;             //RS的真实IP地址</span><br><span class="line">            weight 1 <span class="comment">#默认为1,0为失效</span></span><br><span class="line">            inhibit_on_failure <span class="comment">#在服务器健康检查失效时，将其设为0，而不是直接从ipvs中删除 </span></span><br><span class="line">            notify_up &lt;string&gt; | &lt;quoted-string&gt; <span class="comment">#在检测到server up后执行脚本</span></span><br><span class="line">            notify_down &lt;string&gt; | &lt;quoted-string&gt; <span class="comment">#在检测到server down后执行脚本</span></span><br><span class="line">            </span><br><span class="line">        TCP_CHECK &#123;                    //常用</span><br><span class="line">            connect_timeout 3 <span class="comment">#连接超时时间</span></span><br><span class="line">            nb_get_retry 3 <span class="comment">#重连次数</span></span><br><span class="line">            delay_before_retry 3 <span class="comment">#重连间隔时间</span></span><br><span class="line">            connect_port 23  健康检查的端口的端口</span><br><span class="line">            bindto &lt;ip&gt;   </span><br><span class="line">          &#125;</span><br><span class="line"> </span><br><span class="line">        HTTP_GET | SSL_GET&#123;          //不常用</span><br><span class="line">            url&#123; <span class="comment">#检查url，可以指定多个</span></span><br><span class="line">                 path /</span><br><span class="line">                 digest &lt;string&gt; <span class="comment">#检查后的摘要信息</span></span><br><span class="line">                 status_code 200 <span class="comment">#检查的返回状态码</span></span><br><span class="line">            &#125;</span><br><span class="line">            connect_port &lt;port&gt; </span><br><span class="line">            bindto &lt;IPADD&gt;</span><br><span class="line">            connect_timeout 5</span><br><span class="line">            nb_get_retry 3</span><br><span class="line">            delay_before_retry 2</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        SMTP_CHECK&#123;                 //不常用</span><br><span class="line">            host&#123;</span><br><span class="line">                connect_ip &lt;IP ADDRESS&gt;</span><br><span class="line">                connect_port &lt;port&gt; <span class="comment">#默认检查25端口</span></span><br><span class="line">                bindto &lt;IP ADDRESS&gt;</span><br><span class="line">            &#125;</span><br><span class="line">            connect_timeout 5</span><br><span class="line">            retry 3</span><br><span class="line">            delay_before_retry 2</span><br><span class="line">            helo_name &lt;string&gt; | &lt;quoted-string&gt; <span class="comment">#smtp helo请求命令参数，可选</span></span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        MISC_CHECK&#123;                 //不常用</span><br><span class="line">            misc_path &lt;string&gt; | &lt;quoted-string&gt; <span class="comment">#外部脚本路径</span></span><br><span class="line">            misc_timeout <span class="comment">#脚本执行超时时间</span></span><br><span class="line">            misc_dynamic <span class="comment">#如设置该项，则退出状态码会用来动态调整服务器的权重，返回0 正常，不修改；返回1，</span></span><br><span class="line"> </span><br><span class="line">检查失败，权重改为0；返回2-255，正常，权重设置为：返回状态码-2</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第五部分：vrrp-script"><a href="#第五部分：vrrp-script" class="headerlink" title="第五部分：vrrp_script"></a>第五部分：vrrp_script</h3><p>服务监控脚本。keepalived只能做到对网络故障和keepalived本身的监控，即当出现网络故障或者keepalived本身出现问题时，进行切换。但是这些还不够，我们还需要监控keepalived所在服务器上的其他业务进程，比如说nginx，keepalived+nginx实现nginx的负载均衡高可用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script check_haproxy&#123;</span><br><span class="line"> </span><br><span class="line">    script <span class="string">"/home/check.sh"</span> <span class="comment">#监控脚本</span></span><br><span class="line">    interval 3              <span class="comment">#定时执行脚本间隔</span></span><br><span class="line">    weight -20              <span class="comment">#脚本权重</span></span><br><span class="line">    <span class="comment">#keepalived会定时执行脚本并对脚本执行的结果进行分析，动态调整vrrp_instance的优先级。</span></span><br><span class="line">    <span class="comment">#如果脚本执行结果为0，并且weight配置的值大于0，则优先级相应的增加</span></span><br><span class="line">    <span class="comment">#如果脚本执行结果非0，并且weight配置的值小于0，则优先级相应的减少</span></span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="实例lvs-keepalived-nginx高可用搭建"><a href="#实例lvs-keepalived-nginx高可用搭建" class="headerlink" title="实例lvs+keepalived+nginx高可用搭建"></a>实例lvs+keepalived+nginx高可用搭建</h2><p>服务器    IP地址    角色<br>Srv01    192.168.227.164<br>VIP:     192.168.227.100    LVS+Keepalive</p>
+<p>Srv02    192.168.227.165<br>VIP:     192.168.227.100    LVS+Keepalive</p>
+<p>Srv03    192.168.227.159<br>VIP:     192.168.227.100    Nginx</p>
+<p>Srv04    192.168.227.160<br>VIP:     192.168.227.100    Nginx</p>
+<h2 id="设置后端服务器"><a href="#设置后端服务器" class="headerlink" title="设置后端服务器"></a>设置后端服务器</h2><p>引用 <a href="https://www.cnblogs.com/rexcheny/p/10778636.html" target="_blank" rel="noopener">https://www.cnblogs.com/rexcheny/p/10778636.html</a></p>
+<h3 id="ARP的内核参数"><a href="#ARP的内核参数" class="headerlink" title="ARP的内核参数"></a>ARP的内核参数</h3><p>由于LVS服务器和后端服务器的网卡上都配置了VIP，那么当客户端联系VIP的时候肯定是和LVS服务器的VIP进行通信，然后由LVS服务器基于规则进行调度，我们知道2层通信是基于MAC地址的，那么首次通信时客户端可能并不知道LVS服务器的MAC地址，那么就需要进行ARP广播来解析出VIP所在的服务器的MAC地址，那么显然对客户端进行ARP应答的只能是LVS服务器不能是后端服务器，所以我们就要在后端上修改内核参数来禁止ARP应答和宣告。那么有2个内核参数表示这两个设置：</p>
+<p>arp_ignore：表示接收到ARP广播时的响应级别，默认值为0</p>
+<p>0，默认值，表示响应所有，只要对方查询的IP配置在我自己这台主机上且无论ARP请求从哪个网卡进来，该主机都会响应</p>
+<p>1，收到该ARP请求的网卡IP与ARP请求的IP一致，该主机才响应</p>
+<p>arp_announce：定义将自己的地址向外通告的级别，默认是0</p>
+<p>0，表示将本机所有的MAC地址都向外通告</p>
+<p>1，多网卡主机且都配置了IP地址，那么该主机接入到网络时，无论哪个网卡接入到网络，该网卡都会向外宣告自己所有的MAC地址，所以1表示如果IP不在这个接口上，就避免向外通告，但是不保证一定不会下外通告。</p>
+<p>2，仅向网卡IP直连的网络进行通告</p>
+<p>为什么会有这些级别呢？因为主机可以有多个网卡，每个网卡都对应一个网段，默认情况下这个多网卡主机只要接入网络它就会把自己所在的所有网络地址都向外进行通告。</p>
+<p>所以对于后端服务器，也就是本例子中的Nginx，我们应该在lo上配置子接口，且设置arp_ignore为1，arp_announce为2。</p>
+<h3 id="调整脚本"><a href="#调整脚本" class="headerlink" title="调整脚本"></a>调整脚本</h3><p>这个是配置的nginx端的，用于vip连接分发访问流量到nginx，使用方法 复制到一个sh文件 例子：bash lvs.sh start</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">vip=192.168.227.100</span><br><span class="line">mask=<span class="string">'255.255.255.255'</span></span><br><span class="line">iface=<span class="string">"lo:0"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span></span><br><span class="line">start )</span><br><span class="line">	<span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/conf/all/arp_ignore</span><br><span class="line">	<span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/conf/lo/arp_ignore</span><br><span class="line">	<span class="built_in">echo</span> 2 &gt; /proc/sys/net/ipv4/conf/all/arp_announce</span><br><span class="line">	<span class="built_in">echo</span> 2 &gt; /proc/sys/net/ipv4/conf/lo/arp_announce</span><br><span class="line">	ifconfig <span class="variable">$iface</span> <span class="variable">$vip</span> netmask <span class="variable">$mask</span> broadcast <span class="variable">$vip</span> up</span><br><span class="line">	route add -host <span class="variable">$vip</span> dev <span class="variable">$iface</span></span><br><span class="line">	sysctl -a | egrep <span class="string">"arp_ignore|arp_announce"</span></span><br><span class="line">	;;</span><br><span class="line">stop)</span><br><span class="line">	ifconfig <span class="variable">$iface</span> down</span><br><span class="line">	<span class="built_in">echo</span> 0 &gt; /proc/sys/net/ipv4/conf/all/arp_ignore</span><br><span class="line">	<span class="built_in">echo</span> 0 &gt; /proc/sys/net/ipv4/conf/lo/arp_ignore</span><br><span class="line">	<span class="built_in">echo</span> 0 &gt; /proc/sys/net/ipv4/conf/all/arp_announce</span><br><span class="line">	<span class="built_in">echo</span> 0 &gt; /proc/sys/net/ipv4/conf/lo/arp_announce</span><br><span class="line">	sysctl -a | egrep <span class="string">"arp_ignore|arp_announce"</span></span><br><span class="line">	;;</span><br><span class="line">*) </span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"Usage <span class="variable">$(basename $0)</span> start |stop"</span></span><br><span class="line">	<span class="built_in">exit</span> 1</span><br><span class="line">	;;</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="处理lvs的脑裂-大坑"><a href="#处理lvs的脑裂-大坑" class="headerlink" title="处理lvs的脑裂(大坑)"></a>处理lvs的脑裂(大坑)</h2><p><a href="https://www.jianshu.com/p/35941504a2e8" target="_blank" rel="noopener">https://www.jianshu.com/p/35941504a2e8</a><br>发现的脑裂，应该是防火墙将vrrp 广播给过滤掉了，导致backup接受不到master的广播，然后自己去争抢了vip。所以此处我将防火墙关闭了，如果有对防火墙要求，可以只将防火墙的vvrp开启。注意命令中要修改自己的网卡名称ens33</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --<span class="keyword">in</span>-interface ens33 --destination 224.0.0.1 --protocol vrrp -j ACCEPT</span><br><span class="line">firewall-cmd --direct --permanent --add-rule ipv4 filter OUTPUT 0 --out-interface ens33 --destination 224.0.0.1 --protocol vrrp -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>为了使服务的端口可以通信，80端口或者需要使用的端口也需要放行的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<h3 id="查看配置的规则"><a href="#查看配置的规则" class="headerlink" title="查看配置的规则"></a>查看配置的规则</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --direct --get-rules ipv4 filter INPUT</span><br><span class="line">firewall-cmd --direct --get-rules ipv4 filter OUTPUT</span><br></pre></td></tr></table></figure>
+<h2 id="生产环境配置文件实例："><a href="#生产环境配置文件实例：" class="headerlink" title="生产环境配置文件实例："></a>生产环境配置文件实例：</h2><p>该配置是lvs加keepalived的主配置，从配置需要修改的已经配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">[root@lvs_1 ~]<span class="comment"># cat /etc/keepalived/keepalived.conf </span></span><br><span class="line"></span><br><span class="line">global_defs &#123;</span><br><span class="line">		notification_email &#123;</span><br><span class="line">           49000448@qq.com</span><br><span class="line">    &#125;</span><br><span class="line">    notification_email_from Alexandre.Cassen@firewall.loc</span><br><span class="line">    smtp_server 10.0.0.1</span><br><span class="line">    smtp_connect_timeout 30</span><br><span class="line">	router_id lvs_1         <span class="comment">#主机名，从节点配置名称不能一样</span></span><br><span class="line">	vrrp_skip_check_adv_addr</span><br><span class="line">	vrrp_strict</span><br><span class="line">	vrrp_garp_interval 0</span><br><span class="line">	vrrp_gna_interval 0</span><br><span class="line">	vrrp_mcast_group4 224.0.0.1 <span class="comment">#组播地址</span></span><br><span class="line">	vrrp_iptables</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">        state MASTER       <span class="comment">#从节点配置为BACKUP</span></span><br><span class="line">        interface ens33</span><br><span class="line">        virtual_router_id 55</span><br><span class="line">        priority 150       <span class="comment">#优先级，官方推荐50差范围，从节点配置为100</span></span><br><span class="line">        advert_int 1</span><br><span class="line">        authentication &#123;</span><br><span class="line">             auth_type PASS</span><br><span class="line">             auth_pass 1111</span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;</span><br><span class="line">            192.168.227.100/32 brd 192.168.227.100 dev ens33 lable ens33:0</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">virtual_server 192.168.227.100 80 &#123;</span><br><span class="line">        delay_loop 2</span><br><span class="line">        lb_algo wrr</span><br><span class="line">        lb_kind DR</span><br><span class="line">        protocol TCP</span><br><span class="line">		</span><br><span class="line">		sorry_server 127.0.0.1 80</span><br><span class="line"> </span><br><span class="line">        real_server 192.168.227.159 80 &#123;</span><br><span class="line">            weight 3</span><br><span class="line">            TCP_CHECK &#123;</span><br><span class="line">                        connect_timeout 8</span><br><span class="line">                        nb_get_retry 3</span><br><span class="line">                        delay_before_retry 3</span><br><span class="line">                        connect_port 80</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">        real_server 192.168.227.160 80 &#123;</span><br><span class="line">            weight 1</span><br><span class="line">            TCP_CHECK &#123;</span><br><span class="line">                        connect_timeout 8</span><br><span class="line">                        nb_get_retry 3</span><br><span class="line">                        delay_before_retry 3</span><br><span class="line">                        connect_port 80</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>systemctl retsrat keepalived</p>
+<h2 id="nginx高可用集群双主配置"><a href="#nginx高可用集群双主配置" class="headerlink" title="nginx高可用集群双主配置"></a>nginx高可用集群双主配置</h2><h3 id="编写lb01服务器keepalived配置文件"><a href="#编写lb01服务器keepalived配置文件" class="headerlink" title="编写lb01服务器keepalived配置文件"></a>编写lb01服务器keepalived配置文件</h3><p>[root@lb01 ~]# cat /etc/keepalived/keepalived.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">    ! Configuration File <span class="keyword">for</span> keepalived</span><br><span class="line">     global_defs &#123;</span><br><span class="line">       router_id lb01</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    vrrp_instance shuai &#123;</span><br><span class="line">        state MASTER</span><br><span class="line">        interface eth0</span><br><span class="line">        virtual_router_id 51</span><br><span class="line">        priority 150</span><br><span class="line">        advert_int 1</span><br><span class="line">        authentication &#123;</span><br><span class="line">            auth_type PASS</span><br><span class="line">            auth_pass 1111</span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;</span><br><span class="line">         10.0.0.3/24</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    vrrp_instance ashuai &#123;</span><br><span class="line">        state BACKUP</span><br><span class="line">        interface eth0</span><br><span class="line">        virtual_router_id 52</span><br><span class="line">        priority 100</span><br><span class="line">        advert_int 1</span><br><span class="line">        authentication &#123;</span><br><span class="line">            auth_type PASS</span><br><span class="line">            auth_pass 1111</span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;</span><br><span class="line">         10.0.0.4/24</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">```       </span><br><span class="line"><span class="comment">### 编写lb02服务器keepalived配置文件  </span></span><br><span class="line">```bash  </span><br><span class="line">    ! Configuration File <span class="keyword">for</span> keepalived</span><br><span class="line">    global_defs &#123;</span><br><span class="line">       router_id lb02</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    vrrp_instance shuai &#123;</span><br><span class="line">        state BACKUP</span><br><span class="line">        interface eth0</span><br><span class="line">        virtual_router_id 51</span><br><span class="line">        priority 100</span><br><span class="line">        advert_int 1</span><br><span class="line">        authentication &#123;</span><br><span class="line">            auth_type PASS</span><br><span class="line">            auth_pass 1111</span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;</span><br><span class="line">            10.0.0.3/24</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    vrrp_instance ashuai &#123;</span><br><span class="line">        state MASTER</span><br><span class="line">        interface eth0</span><br><span class="line">        virtual_router_id 52</span><br><span class="line">        priority 150</span><br><span class="line">        advert_int 1</span><br><span class="line">        authentication &#123;</span><br><span class="line">            auth_type PASS</span><br><span class="line">            auth_pass 1111</span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;</span><br><span class="line">            10.0.0.4/24</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="修改nginx负载均衡文件"><a href="#修改nginx负载均衡文件" class="headerlink" title="修改nginx负载均衡文件"></a>修改nginx负载均衡文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">upstream oldboy &#123;</span><br><span class="line">   server 10.0.0.7:80;</span><br><span class="line">   server 10.0.0.8:80;</span><br><span class="line">   server 10.0.0.9:80;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen       10.0.0.3:80;</span><br><span class="line">    server_name  www.oldboy.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">       proxy_pass http://oldboy;</span><br><span class="line">       proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">       proxy_set_header X-Forwarded-For <span class="variable">$remote_addr</span>;</span><br><span class="line">       proxy_next_upstream error timeout http_404 http_502 http_403;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen       10.0.0.4:80;</span><br><span class="line">    server_name  bbs.oldboy.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">       proxy_pass http://oldboy;</span><br><span class="line">       proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">       proxy_set_header X-Forwarded-For <span class="variable">$remote_addr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="修改内核文件"><a href="#修改内核文件" class="headerlink" title="修改内核文件"></a>修改内核文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">异常问题:</span><br><span class="line">    01. 如何设置监听网卡上没有的地址</span><br><span class="line">    解决: 需要修改内核信息</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'net.ipv4.ip_nonlocal_bind = 1'</span> &gt;&gt;/etc/sysctl.conf</span><br><span class="line">        sysctl -p</span><br></pre></td></tr></table></figure>
+<h3 id="重启nginx负载均衡服务"><a href="#重启nginx负载均衡服务" class="headerlink" title="重启nginx负载均衡服务"></a>重启nginx负载均衡服务</h3><p>systemctl restart nginx</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/04/21/Docker%E7%AC%94%E8%AE%B0/" rel="next" title="Docker笔记">
+                <i class="fa fa-chevron-left"></i> Docker笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">运维笔记 QQ:1714594511</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#keepalive配置文件详解"><span class="nav-number">1.</span> <span class="nav-text">keepalive配置文件详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一部分：全局定义块"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分：全局定义块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二部分：vrrp-sync-group"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分：vrrp_sync_group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三部分：vrrp-instance"><span class="nav-number">1.3.</span> <span class="nav-text">第三部分：vrrp_instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四部分：virtual-server"><span class="nav-number">1.4.</span> <span class="nav-text">第四部分：virtual_server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五部分：vrrp-script"><span class="nav-number">1.5.</span> <span class="nav-text">第五部分：vrrp_script</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例lvs-keepalived-nginx高可用搭建"><span class="nav-number">2.</span> <span class="nav-text">实例lvs+keepalived+nginx高可用搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置后端服务器"><span class="nav-number">3.</span> <span class="nav-text">设置后端服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ARP的内核参数"><span class="nav-number">3.1.</span> <span class="nav-text">ARP的内核参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调整脚本"><span class="nav-number">3.2.</span> <span class="nav-text">调整脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理lvs的脑裂-大坑"><span class="nav-number">4.</span> <span class="nav-text">处理lvs的脑裂(大坑)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看配置的规则"><span class="nav-number">4.1.</span> <span class="nav-text">查看配置的规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产环境配置文件实例："><span class="nav-number">5.</span> <span class="nav-text">生产环境配置文件实例：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx高可用集群双主配置"><span class="nav-number">6.</span> <span class="nav-text">nginx高可用集群双主配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编写lb01服务器keepalived配置文件"><span class="nav-number">6.1.</span> <span class="nav-text">编写lb01服务器keepalived配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改nginx负载均衡文件"><span class="nav-number">6.2.</span> <span class="nav-text">修改nginx负载均衡文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改内核文件"><span class="nav-number">6.3.</span> <span class="nav-text">修改内核文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启nginx负载均衡服务"><span class="nav-number">6.4.</span> <span class="nav-text">重启nginx负载均衡服务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+
+[一个人知道自己为什么而活，就可以忍受任何一种生活。]
+&copy; 
+<span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">运维笔记 QQ:1714594511</span>
+
+  
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"log":false});</script></body>
+</html>
