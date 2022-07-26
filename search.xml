@@ -6855,6 +6855,21 @@ ansible_ssh_pass=123456  #节点密码</code></pre><p>命令例子：ansible tes
 <p>4.开启同步操作<br>start replica ;  #8.0.22之后<br>start slave;    #8.0.22之前<br>stop slave 停止</p>
 <p>5.查看主从同步状态<br>show replica status\G;    #8.0.22之后<br>show slave status\G;        #8.0.22之前</p>
 <p>Slave_IO_Running: Yes<br>Slave_SQL_Running: Yes<br>出现以上显示，说明配置成功</p>
+<h2 id="MySql主从同步异常解决方案"><a href="#MySql主从同步异常解决方案" class="headerlink" title="MySql主从同步异常解决方案"></a>MySql主从同步异常解决方案</h2><p>mysql 主从同步一担出了问题之后，就会导致从库上的数据和主库不一样了。所以需要生新同步数据。</p>
+<p>1、登录主库服务器，进入mysql，命令为：</p>
+<p>mysql -uroot -p<br>2、执行：FLUSH TABLES WITH READ LOCK;</p>
+<p>3、查看主库状态：</p>
+<p>mysql&gt; show master status;</p>
+<p>4、再开一个主库服务器的SSH，这次不进入mysql，需要导出mysql的数据库：</p>
+<p>mysqldump -u root -ppassword –opt -R database &gt; database20161109.sql<br>并把生成的 database20161109.sql上传到从服务器的一个位置</p>
+<p>5、登录到从服务器，直接执行：</p>
+<p>mysql -uroot -p database &lt; database20161109.sql<br>6、回到主库并执行：UNLOCK TABLES;</p>
+<p>7、进入从服务器的mysql</p>
+<p>依次执行：</p>
+<p>复制代码<br>mysql&gt; stop slave;</p>
+<p>mysql&gt; reset slave;</p>
+<p>mysql&gt; change master to master_host=’主机IP’,master_user=’master’,master_password=’master’,master_log_file=’mysql-bin.000011’,master_log_pos=19282684;</p>
+<p>mysql&gt; start slave;</p>
 <h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><p>分库分表的中心思想都是将数据分散存储，使得单一数据库/ 表的数据量变小来缓解单一数据库的性能问题,从而达到提升数据库性能的目的。</p>
 <p>垂直分库:以表为依据，根据业务将不同表拆分到不同库中。<br>特点:<br>1.每个库的表结构都不- -样。<br>2.每个库的数据也不- -样。<br>3.所有库的并集是全量数据。</p>
 <p>垂直分表:以字段为依据,根据字段属性将不同字段拆分到不同表中。<br>特点:</p>
